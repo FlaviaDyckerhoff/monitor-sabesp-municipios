@@ -1,0 +1,88 @@
+// parsers/sino-siscam.js
+// Parser para câmaras que usam o sistema SINO Siscam
+// Testado em: Câmara de Botucatu/SP
+
+async function buscar(municipio) {
+  const { url_base, grupo_id, tipo_ids } = municipio;
+  const ano = new Date().getFullYear();
+  const tipoParams = tipo_ids.map(id => `TipoId=${id}`).join('&');
+  const todas = [];
+  let pagina = 1;
+
+  while (true) {
+    const url = `${url_base}/Siscam/Documentos?Pesquisa=Avancada&ShowSearch=False&GrupoId=${grupo_id}&${tipoParams}&SubtipoId=&Numeracao=Documento&NumeroSufixo=&Ano=${ano}&Data=&Ementa=&Observacoes=&SituacaoId=&RegimeId=&QuorumId=&TipoAutorId=&AutorId=&TipoIniciativaId=&Ordenacao=3&ItemsPerPage=100&NoTexto=false&Pagina=${pagina}`;
+
+    console.log(`  [${municipio.nome}] Página ${pagina}...`);
+
+    const response = await fetch(url, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (compatible; MonitorBot/1.0)',
+        'Accept': 'text/html,application/xhtml+xml',
+        'Accept-Language': 'pt-BR,pt;q=0.9',
+      }
+    });
+
+    if (!response.ok) {
+      console.error(`  [${municipio.nome}] Erro HTTP ${response.status}`);
+      break;
+    }
+
+    const html = await response.text();
+    const proposicoes = parsearHTML(html, url_base, grupo_id);
+    console.log(`  [${municipio.nome}] → ${proposicoes.length} proposituras`);
+
+    todas.push(...proposicoes);
+
+    const temProxima = html.includes(`Pagina=${pagina + 1}`);
+    if (!temProxima || proposicoes.length === 0 || pagina >= 10) break;
+
+    pagina++;
+    await new Promise(r => setTimeout(r, 1000));
+  }
+
+  return todas;
+}
+
+function parsearHTML(html, url_base, grupo_id) {
+  const proposicoes = [];
+
+  const tabelaMatch = html.match(/<tbody[\s\S]*?<\/tbody>/i);
+  if (!tabelaMatch) return proposicoes;
+
+  const trs = tabelaMatch[0].match(/<tr[\s\S]*?<\/tr>/gi) || [];
+
+  for (const tr of trs) {
+    const idMatch = tr.match(/Details\?id=(\d+)&grupoId=\d+/);
+    if (!idMatch) continue;
+    const id = idMatch[1];
+
+    const linkTextMatch = tr.match(/Details\?id=\d+&grupoId=\d+[^>]*>([^<]+)<\/a>/);
+    const linkText = linkTextMatch ? linkTextMatch[1].trim() : '';
+
+    const tipoNumeroMatch = linkText.match(/^(.+?)\s+N[ºo°]?\s*([\d\/]+)$/i);
+    const tipo = tipoNumeroMatch ? tipoNumeroMatch[1].trim() : linkText;
+    const numero = tipoNumeroMatch ? tipoNumeroMatch[2].trim() : '';
+
+    const dataMatch = tr.match(/(\d{2}\/\d{2}\/\d{4})/);
+    const data = dataMatch ? dataMatch[1] : '';
+
+    const tds = tr.match(/<td[\s\S]*?<\/td>/gi) || [];
+    const tdLongo = tds
+      .map(td => td.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim())
+      .filter(t => t.length > 30 && !t.match(/^[\d\/\s]+$/))
+      .sort((a, b) => b.length - a.length)[0] || '';
+
+    const autorMatch = tdLongo.match(/Autor(?:ia)?\s*:\s*([A-ZÁÉÍÓÚÃÕÂÊÎÔÛÀÇ][^(\n]{3,80}?)(?:\s{2,}|\s+(?:Apoio|Subscreve|$))/);
+    const autor = autorMatch ? autorMatch[1].trim() : '-';
+
+    const ementa = tdLongo.split(/\s+Autor(?:ia)?\s*:/i)[0].trim().substring(0, 400);
+
+    const url = `${url_base}/Siscam/Documentos/Details?id=${id}&grupoId=${grupo_id}`;
+
+    proposicoes.push({ id: `botucatu-${id}`, tipo, numero, data, autor, ementa, url });
+  }
+
+  return proposicoes;
+}
+
+module.exports = { buscar };
