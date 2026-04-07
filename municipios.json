@@ -6,5 +6,11 @@
     "url_base": "https://www.camarabotucatu.sp.gov.br",
     "grupo_id": 3,
     "tipo_ids": [67, 50, 51, 46, 48, 44, 45, 47, 49, 39]
+  },
+  {
+    "nome": "Hortolândia",
+    "uf": "SP",
+    "sistema": "sagl",
+    "url_base": "https://sapl.hortolandia.sp.leg.br"
   }
 ]
