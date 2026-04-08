@@ -7064,7 +7064,9 @@
       "sbc-573616",
       "sbc-573615",
       "sbc-573637",
-      "sbc-573638"
+      "sbc-573638",
+      "sbc-573645",
+      "sbc-573601"
     ],
     "Bragança Paulista": [],
     "Cajamar": [
@@ -10102,5 +10104,5 @@
     "Nazaré Paulista": [],
     "Osasco": []
   },
-  "ultima_execucao": "2026-04-08T18:46:17.341Z"
+  "ultima_execucao": "2026-04-08T18:55:48.813Z"
 }
