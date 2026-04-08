@@ -1,18 +1,20 @@
 // parsers/sapl.js
-// Parser para câmaras que usam o sistema SAPL (Software de Apoio ao Processo Legislativo)
-// API REST pública: /api/materia/materialegislativa/
-// Testado em: AL-AL, e compatível com demais SAPLs públicos
+// Parser para câmaras que usam SAPL moderno (Interlegis 3.x)
+// API REST padrão Django REST Framework em /api/materia/materialegislativa/
+// Suporta dois formatos de paginação:
+//   - Padrão DRF: { next, results }
+//   - Campinas/customizado: { pagination: { next_page, total_pages }, results }
+// Testado em: Socorro/SP, Campinas/SP, Boa Vista/RR, Rio Branco/AC
 
 async function buscar(municipio) {
-  const { url_base } = municipio;
+  const { url_base, nome } = municipio;
   const ano = new Date().getFullYear();
   const todas = [];
   let pagina = 1;
 
   while (true) {
-    const url = `${url_base}/api/materia/materialegislativa/?ano=${ano}&page=${pagina}&page_size=100&ordering=-numero`;
-
-    console.log(`  [${municipio.nome}] Página ${pagina}...`);
+    const url = `${url_base}/api/materia/materialegislativa/?ano=${ano}&page=${pagina}&page_size=100&ordering=-id`;
+    console.log(`  [${nome}] Página ${pagina}...`);
 
     const response = await fetch(url, {
       headers: {
@@ -22,31 +24,46 @@ async function buscar(municipio) {
     });
 
     if (!response.ok) {
-      console.error(`  [${municipio.nome}] Erro HTTP ${response.status}`);
+      console.error(`  [${nome}] Erro HTTP ${response.status}`);
       break;
     }
 
     const json = await response.json();
-
-    // SAPL retorna { count, next, previous, results }
     const resultados = json.results || [];
-    console.log(`  [${municipio.nome}] → ${resultados.length} proposituras`);
+    console.log(`  [${nome}] → ${resultados.length} matérias`);
 
     for (const p of resultados) {
-      const id = `${municipio.nome.toLowerCase().replace(/\s/g,'-')}-${p.id}`;
-      const tipo = p.tipo?.sigla || p.tipo?.descricao || '-';
+      const id = `${nome.toLowerCase().replace(/\s+/g, '-')}-${p.id}`;
+
+      // Tipo: extrair do __str__ ("Projeto de Lei nº 12 de 2026" → "Projeto de Lei")
+      const tipo = p.__str__
+        ? p.__str__.replace(/\s+n[ºo°]?\s*\d+.*$/i, '').trim()
+        : 'Matéria';
+
       const numero = `${p.numero}/${p.ano}`;
+
       const data = p.data_apresentacao
-        ? new Date(p.data_apresentacao).toLocaleDateString('pt-BR')
+        ? new Date(p.data_apresentacao + 'T12:00:00').toLocaleDateString('pt-BR')
         : '-';
-      const autor = (p.autoria || []).map(a => a.autor_related?.nome || a.nome || '').filter(Boolean).join(', ') || '-';
-      const ementa = (p.ementa || '-').substring(0, 400);
+
+      const autor = (p.autores || [])
+        .map(a => a.nome || a.autor_related?.nome || '')
+        .filter(Boolean).join(', ') || '-';
+
+      const ementa = (p.ementa || '-').trim().substring(0, 400);
+
+      // Garante https na URL
       const url_prop = `${url_base}/materia/${p.id}`;
 
       todas.push({ id, tipo, numero, data, autor, ementa, url: url_prop });
     }
 
-    if (!json.next || pagina >= 10) break;
+    // Suporte aos dois formatos de paginação
+    const temProxima =
+      json.next ||                                    // DRF padrão
+      (json.pagination && json.pagination.next_page); // Campinas
+
+    if (!temProxima || resultados.length === 0 || pagina >= 50) break;
     pagina++;
     await new Promise(r => setTimeout(r, 1000));
   }
