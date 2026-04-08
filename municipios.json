@@ -3,7 +3,7 @@
     "nome": "Botucatu",
     "uf": "SP",
     "sistema": "sino-siscam",
-    "url_base": "https://www.camarabotucatu.sp.gov.br",
+    "url_base": "https://www.camarabotucatu.sp.gov.br/Siscam",
     "grupo_id": 3,
     "tipo_ids": [
       67,
