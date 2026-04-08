@@ -2002,7 +2002,9 @@
       "socorro-5224",
       "socorro-5225",
       "socorro-5025",
-      "socorro-5030"
+      "socorro-5030",
+      "socorro-5227",
+      "socorro-5226"
     ],
     "Santo André": [
       "santo-andré-71413",
@@ -2243,5 +2245,5 @@
     ],
     "Nazaré Paulista": []
   },
-  "ultima_execucao": "2026-04-08T20:41:00.838Z"
+  "ultima_execucao": "2026-04-08T22:10:10.400Z"
 }
