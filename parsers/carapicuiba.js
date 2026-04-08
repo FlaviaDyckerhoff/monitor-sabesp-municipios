@@ -47,14 +47,14 @@ async function buscar(municipio) {
 function parsearHTML(html, url_base) {
   const proposituras = [];
 
-  // URL completa: /atividade-legislativa/proposicoes/materia/16845
-  const cardRegex = /href="(\/atividade-legislativa\/proposicoes\/materia\/(\d+))"[^>]*>[^<]*Mais informa/gi;
+  // URL completa (absoluta ou relativa): .../atividade-legislativa/proposicoes/materia/ID
+  const cardRegex = /href="(?:https?:\/\/[^"]*)?\/atividade-legislativa\/proposicoes\/materia\/(\d+)"/gi;
   const vistos = new Set();
   let m;
 
   while ((m = cardRegex.exec(html)) !== null) {
-    const href = m[1];
-    const id_interno = m[2];
+    const id_interno = m[1];
+    const href = `/atividade-legislativa/proposicoes/materia/${id_interno}`;
 
     if (vistos.has(id_interno)) continue;
     vistos.add(id_interno);
