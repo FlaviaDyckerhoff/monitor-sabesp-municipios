@@ -1,32 +1,31 @@
 // parsers/nazare-paulista.js
 // Parser para o sistema PHP próprio da Câmara de Nazaré Paulista/SP
-// URLs com pag= (base64 fixo por grupo) + tp= (tipo) + ano= + id= (detalhe)
-// Sem API REST — scraping HTML
 
 const TIPOS = [
   {
     nome: 'Projetos',
+    pag: 'T1RFPU9UVT1PVEk9T0dZPU9HRT1PV0k9T1RZPQ==',
     tp: 10,
-    pag: 'T1RFPU9UVT1PVEk9T0dZPU9HRT1PV0k5T1RZPQ==',
+    view: 'getTPET',
     estado: 'tramitacao',
     tpBusca: 'projeto',
   },
   {
     nome: 'Indicações',
-    tp: 5,
     pag: 'T0RVPU9UST1PRFk9T1dFPU9UST1PR009T1RVPU9XUT1PVGc9T1dVPQ==',
+    tp: 5,
     tpBusca: 'indicacao',
   },
   {
     nome: 'Moções',
-    tp: 4,
     pag: 'T0RVPU9UST1PRFk9T1dFPU9UST1PR009T1RVPU9XUT1PVGc9T1dVPQ==',
+    tp: 4,
     tpBusca: 'mocao',
   },
   {
     nome: 'Requerimentos',
-    tp: 3,
     pag: 'T0RVPU9UST1PRFk9T1dFPU9UST1PR009T1RVPU9XUT1PVGc9T1dVPQ==',
+    tp: 3,
     tpBusca: 'requerimento',
   },
 ];
@@ -47,6 +46,8 @@ async function buscar(municipio) {
       estado: tipo.estado || '',
       ano,
     });
+
+    if (tipo.view) params.set('view', tipo.view);
 
     const url = `${url_base}/?${params.toString()}`;
 
@@ -76,8 +77,6 @@ async function buscar(municipio) {
 
 function parsearListagem(html, url_base, tipo, ano) {
   const proposituras = [];
-
-  // Links de detalhe: ?pag=...&id=XXXXX&tpBusca=tipo
   const linkRegex = /\?pag=[^"'&]+&(?:amp;)?id=(\d+)&(?:amp;)?tpBusca=([^"'&\s]+)/gi;
   const vistos = new Set();
   let m;
@@ -89,39 +88,30 @@ function parsearListagem(html, url_base, tipo, ano) {
     if (vistos.has(id)) continue;
     vistos.add(id);
 
-    // Contexto ao redor do link
     const idx = m.index;
     const bloco = html.substring(Math.max(0, idx - 500), idx + 1000);
 
-    // Número — padrão "Nº 001/2026" ou "001/2026"
     const numMatch = bloco.match(/N[ºo°]?\s*\.?\s*(\d+\/\d{4})/i)
       || bloco.match(/(\d{2,4}\/\d{4})/);
     const numero = numMatch ? numMatch[1] : '-';
 
-    // Data — dd/mm/aaaa
     const dataMatch = bloco.match(/(\d{2}\/\d{2}\/\d{4})/);
     const data = dataMatch ? dataMatch[1] : '-';
 
-    // Ementa/assunto — texto mais longo do bloco
     const ementaMatch = bloco.match(/(?:Assunto|Ementa|Objeto)\s*:?\s*([^<\n]{20,400})/i);
     const ementa = ementaMatch
       ? ementaMatch[1].replace(/<[^>]+>/g, '').trim().substring(0, 400)
       : tipo.nome;
 
-    // Autor
     const autorMatch = bloco.match(/(?:Autor|Vereador[a]?)\s*:?\s*([A-ZÁÉÍÓÚÃÕ][^<\n]{3,60})/i);
     const autor = autorMatch ? autorMatch[1].trim() : '-';
 
-    // Monta URL de detalhe com pag= do tipo
     const urlDetalhe = `${url_base}/?pag=${encodeURIComponent(tipo.pag)}&id=${id}&tpBusca=${tpBusca}`;
 
     proposituras.push({
       id: `nazare-paulista-${id}`,
       tipo: tipo.nome,
-      numero,
-      data,
-      autor,
-      ementa,
+      numero, data, autor, ementa,
       url: urlDetalhe,
     });
   }
