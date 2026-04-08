@@ -1,18 +1,20 @@
 // parsers/sino-siscam.js
-// Parser para câmaras que usam o sistema SINO Siscam
-// Testado em: Câmara de Botucatu/SP
+// Parser para câmaras que usam o sistema SINO Siscam moderno
+// URL: GET /Documentos?Pesquisa=Avancada&GrupoId=N&TipoId=X&Ano=AAAA&...
+// Testado em: Botucatu/SP, Várzea Paulista/SP, Bragança Paulista/SP
 
 async function buscar(municipio) {
-  const { url_base, grupo_id, tipo_ids } = municipio;
+  const { url_base, nome, grupo_id, tipo_ids } = municipio;
   const ano = new Date().getFullYear();
   const tipoParams = tipo_ids.map(id => `TipoId=${id}`).join('&');
   const todas = [];
   let pagina = 1;
 
   while (true) {
-    const url = `${url_base}/Siscam/Documentos?Pesquisa=Avancada&ShowSearch=False&GrupoId=${grupo_id}&${tipoParams}&SubtipoId=&Numeracao=Documento&NumeroSufixo=&Ano=${ano}&Data=&Ementa=&Observacoes=&SituacaoId=&RegimeId=&QuorumId=&TipoAutorId=&AutorId=&TipoIniciativaId=&Ordenacao=3&ItemsPerPage=100&NoTexto=false&Pagina=${pagina}`;
+    // URL sem /Siscam/ — padrão correto para instâncias modernas
+    const url = `${url_base}/Documentos?Pesquisa=Avancada&ShowSearch=False&GrupoId=${grupo_id}&${tipoParams}&SubtipoId=&Numeracao=Documento&NumeroSufixo=&Ano=${ano}&Data=&Ementa=&Observacoes=&SituacaoId=&ClassificacaoId=&RegimeId=&QuorumId=&TipoAutorId=&AutorId=&TipoIniciativaId=&Ordenacao=3&ItemsPerPage=100&NoTexto=false&Pagina=${pagina}`;
 
-    console.log(`  [${municipio.nome}] Página ${pagina}...`);
+    console.log(`  [${nome}] Página ${pagina}...`);
 
     const response = await fetch(url, {
       headers: {
@@ -23,13 +25,13 @@ async function buscar(municipio) {
     });
 
     if (!response.ok) {
-      console.error(`  [${municipio.nome}] Erro HTTP ${response.status}`);
+      console.error(`  [${nome}] Erro HTTP ${response.status}`);
       break;
     }
 
     const html = await response.text();
     const proposicoes = parsearHTML(html, url_base, grupo_id);
-    console.log(`  [${municipio.nome}] → ${proposicoes.length} proposituras`);
+    console.log(`  [${nome}] → ${proposicoes.length} proposituras`);
 
     todas.push(...proposicoes);
 
@@ -77,9 +79,12 @@ function parsearHTML(html, url_base, grupo_id) {
 
     const ementa = tdLongo.split(/\s+Autor(?:ia)?\s*:/i)[0].trim().substring(0, 400);
 
-    const url = `${url_base}/Siscam/Documentos/Details?id=${id}&grupoId=${grupo_id}`;
+    const url_prop = `${url_base}/Documentos/Details?id=${id}&grupoId=${grupo_id}`;
 
-    proposicoes.push({ id: `botucatu-${id}`, tipo, numero, data, autor, ementa, url });
+    proposicoes.push({
+      id: `${url_base.replace(/https?:\/\//, '').replace(/\./g, '-')}-${id}`,
+      tipo, numero, data, autor, ementa, url: url_prop
+    });
   }
 
   return proposicoes;

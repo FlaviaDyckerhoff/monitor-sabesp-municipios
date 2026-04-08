@@ -71,7 +71,7 @@
     "sistema": "sino-siscam",
     "url_base": "https://braganca.siscam.com.br",
     "grupo_id": 3,
-    "tipo_ids": [5, 6, 2, 3, 4]
+    "tipo_ids": [5, 6, 2, 3, 4, 13]
   },
   {
     "nome": "Cajamar",
