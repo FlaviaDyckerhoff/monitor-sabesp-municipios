@@ -1,9 +1,8 @@
 // parsers/legisoft.js
 // Parser para câmaras que usam o sistema Legisoft (Virtualiza Tecnologia)
-// Método: GET com slugs no path, resposta em HTML (server-side rendering)
-// URL padrão: /documentos/ordem:DESC/tipo:legislativo-2/ano:AAAA/pagina:N
-// Testado em: Câmara de São Bernardo do Campo/SP
-// Bloqueado por Cloudflare em: Guarulhos/SP
+// URL: /documentos/ordem:DESC/tipo:legislativo-2/ano:AAAA/pagina:N
+// Links de detalhe: /documento/titulo-do-doc-NUMEROID
+// Testado em: São Bernardo do Campo/SP
 
 async function buscar(municipio) {
   const { url_base, nome, legisoft_tipo } = municipio;
@@ -18,7 +17,7 @@ async function buscar(municipio) {
 
     const response = await fetch(url, {
       headers: {
-        'User-Agent': 'Mozilla/5.0 (compatible; MonitorBot/1.0)',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
         'Accept': 'text/html,application/xhtml+xml',
         'Accept-Language': 'pt-BR,pt;q=0.9',
       }
@@ -30,19 +29,15 @@ async function buscar(municipio) {
     }
 
     const html = await response.text();
-    const proposituras = parsearHTML(html, url_base, nome);
+    const proposituras = parsearHTML(html, url_base);
     console.log(`  [${nome}] → ${proposituras.length} proposituras`);
 
     if (proposituras.length === 0) break;
     todas.push(...proposituras);
 
-    // Verifica se há próxima página
-    const temProxima = html.includes(`pagina:${pagina + 1}`) ||
-      html.includes('próxima') ||
-      html.includes('Próxima') ||
-      (html.match(/page-item(?!\s+disabled)[^>]*>\s*<a[^>]*>\s*[»›>]/i) !== null);
-
-    if (!temProxima || proposituras.length < 10 || pagina >= 50) break;
+    // Verifica próxima página
+    const temProxima = html.includes(`pagina:${pagina + 1}`);
+    if (!temProxima || proposituras.length < 5 || pagina >= 50) break;
     pagina++;
     await new Promise(r => setTimeout(r, 1500));
   }
@@ -50,66 +45,58 @@ async function buscar(municipio) {
   return todas;
 }
 
-function parsearHTML(html, url_base, nome) {
+function parsearHTML(html, url_base) {
   const proposituras = [];
-
-  // Legisoft renderiza cards com classe document-desc ou similar
-  // Estrutura típica: div.list-link com título, data, autor, ementa
-
-  // Extrai todos os links de proposituras
-  // Padrão URL: /documento/SLUG ou /documentos/id:N
-  const linkRegex = /href="(\/(?:documento|documentos)\/[^"]+)"/gi;
   const vistos = new Set();
+
+  // SBC usa links no padrão: /documento/titulo-do-documento-NUMEROID
+  // O ID numérico fica após o último hífen no slug
+  const linkRegex = /href="(\/documento\/([a-z0-9\-]+))"/gi;
   let m;
 
-  // Estratégia: divide o HTML por card de documento
-  // Legisoft usa padrão de card com classe específica
-  const cardRegex = /<(?:div|article|li)[^>]*class="[^"]*(?:document|doc-item|list-link|card)[^"]*"[\s\S]*?(?=<(?:div|article|li)[^>]*class="[^"]*(?:document|doc-item|list-link|card)|$)/gi;
-
-  // Abordagem alternativa mais robusta: busca por padrão de título + link
-  // Legisoft usa títulos como "Projeto de Lei nº 100/2026" em links
-  const tituloLinkRegex = /<a\s+href="(\/[^"]+)"[^>]*>\s*([^<]*(?:Projeto|Indicação|Moção|Requerimento|Proposta|Decreto|Resolução|Emenda|Veto)[^<]*)<\/a>/gi;
-
-  while ((m = tituloLinkRegex.exec(html)) !== null) {
+  while ((m = linkRegex.exec(html)) !== null) {
     const href = m[1];
-    const titulo = m[2].trim();
+    const slug = m[2];
 
-    if (vistos.has(href)) continue;
-    vistos.add(href);
+    // Extrai ID numérico do final do slug (após último hífen)
+    const idMatch = slug.match(/-(\d+)$/);
+    if (!idMatch) continue;
 
-    // Extrai tipo e número do título
-    // Ex: "Projeto de Lei nº 100/2026" ou "PL 100/2026"
-    const tipoNumeroMatch = titulo.match(/^(.+?)\s+n[ºo°]?\s*([\d]+\/\d{4})/i);
-    const tipo = tipoNumeroMatch ? tipoNumeroMatch[1].trim() : titulo.split(/\s+\d/)[0].trim();
-    const numero = tipoNumeroMatch ? tipoNumeroMatch[2] : '';
+    const id_interno = idMatch[1];
+    if (vistos.has(id_interno)) continue;
+    vistos.add(id_interno);
 
-    // Pega contexto ao redor do link para extrair data, autor, ementa
+    // Contexto ao redor do link
     const idx = m.index;
-    const bloco = html.substring(Math.max(0, idx - 200), idx + 2000);
+    const bloco = html.substring(Math.max(0, idx - 500), idx + 1500);
 
-    // Data: padrão dd/mm/aaaa
+    // Tipo e número do título do documento
+    // Ex: "Projeto de Lei nº 100/2026" ou "PL 100/2026"
+    const tituloMatch = bloco.match(/([A-ZÀ-Úa-zà-ú][^\n<\d]{2,60}?)\s+n[ºo°]?\s*([\d]+\/\d{4})/i);
+    const tipo = tituloMatch ? tituloMatch[1].trim() : 'Propositura';
+    const numero = tituloMatch ? tituloMatch[2] : '';
+
+    // Data
     const dataMatch = bloco.match(/(\d{2}\/\d{2}\/\d{4})/);
     const data = dataMatch ? dataMatch[1] : '-';
 
-    // Autor: texto após "Autor" ou "Autoria"
-    const autorMatch = bloco.match(/(?:Autor(?:ia)?|Vereador(?:a)?|De autoria)\s*:?\s*<[^>]*>\s*([^<\n]{3,80})/i)
-      || bloco.match(/(?:Autor(?:ia)?)\s*:\s*([^<\n]{3,80})/i);
+    // Autor
+    const autorMatch = bloco.match(/(?:Autor(?:ia)?|Vereador[a]?)\s*:?\s*([A-ZÁÉÍÓÚÃÕ][^<\n]{3,60})/i);
     const autor = autorMatch ? autorMatch[1].replace(/<[^>]+>/g, '').trim() : '-';
 
-    // Ementa: texto mais longo próximo ao card
-    const ementaMatch = bloco.match(/(?:Ementa|ementa|p\.document-desc)[^>]*>\s*([\s\S]{20,400}?)(?=<\/[^>]+>|Autor|Data|$)/i);
+    // Ementa — texto mais longo próximo ao link
+    const ementaMatch = bloco.match(/(?:Ementa|ementa|p\.document-desc)[^>]*>\s*([\s\S]{20,400}?)(?=<\/[^>]+>|Autor|Data|class=)/i);
     const ementa = ementaMatch
       ? ementaMatch[1].replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim().substring(0, 400)
-      : titulo;
+      : tipo;
 
-    // ID: usa o path do link
-    const idSlug = href.replace(/\//g, '-').replace(/^-/, '');
-    const id = `${nome.toLowerCase().replace(/\s+/g, '-')}-${idSlug}`;
     const url_prop = href.startsWith('http') ? href : `${url_base}${href}`;
 
-    if (!tipo || tipo.length < 2) continue;
-
-    proposituras.push({ id, tipo, numero, data, autor, ementa, url: url_prop });
+    proposituras.push({
+      id: `sbc-${id_interno}`,
+      tipo, numero, data, autor, ementa,
+      url: url_prop
+    });
   }
 
   return proposituras;
