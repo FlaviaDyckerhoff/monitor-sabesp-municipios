@@ -12,5 +12,89 @@
     "uf": "SP",
     "sistema": "sagl",
     "url_base": "https://sapl.hortolandia.sp.leg.br"
+  },
+  {
+    "nome": "Várzea Paulista",
+    "uf": "SP",
+    "sistema": "sino-siscam",
+    "url_base": "https://varzeapaulista9.siscam.com.br",
+    "grupo_id": 1,
+    "tipo_ids": [79, 9, 8, 95, 5, 6, 2, 3, 4, 7, 57]
+  },
+  {
+    "nome": "Socorro",
+    "uf": "SP",
+    "sistema": "sapl",
+    "url_base": "https://sapl.socorro.sp.leg.br"
+  },
+  {
+    "nome": "Campinas",
+    "uf": "SP",
+    "sistema": "sapl",
+    "url_base": "https://sapl.campinas.sp.leg.br"
+  },
+  {
+    "nome": "Santo André",
+    "uf": "SP",
+    "sistema": "spl",
+    "url_base": "https://camarasempapel.cmsandre.sp.gov.br"
+  },
+  {
+    "nome": "Caçapava",
+    "uf": "SP",
+    "sistema": "spl",
+    "url_base": "https://cacapava.splonline.com.br"
+  },
+  {
+    "nome": "Tremembé",
+    "uf": "SP",
+    "sistema": "spl",
+    "url_base": "https://tremembe.camarasempapel.com.br"
+  },
+  {
+    "nome": "Santos",
+    "uf": "SP",
+    "sistema": "backsite",
+    "url_base": "https://administrativo.camarasantos.sp.gov.br",
+    "backsite_path": "/dispositivo/customizado_publico/legislativo/busca_propositura_pub/"
+  },
+  {
+    "nome": "São Bernardo do Campo",
+    "uf": "SP",
+    "sistema": "legisoft",
+    "url_base": "https://www.camarasbc.sp.gov.br",
+    "legisoft_tipo": "legislativo-2"
+  },
+  {
+    "nome": "Bragança Paulista",
+    "uf": "SP",
+    "sistema": "sino-siscam",
+    "url_base": "https://braganca.siscam.com.br",
+    "grupo_id": 3,
+    "tipo_ids": [5, 6, 2, 3, 4]
+  },
+  {
+    "nome": "Cajamar",
+    "uf": "SP",
+    "sistema": "cajamar",
+    "url_base": "https://www.cmdc.sp.gov.br",
+    "cajamar_paths": [
+      "/documentos/lei",
+      "/documentos/indicacoes",
+      "/documentos/requerimentos",
+      "/documentos/mocao"
+    ]
+  },
+  {
+    "nome": "Carapicuíba",
+    "uf": "SP",
+    "sistema": "carapicuiba",
+    "url_base": "https://www.camaracarapicuiba.sp.gov.br"
+  },
+  {
+    "nome": "Nazaré Paulista",
+    "uf": "SP",
+    "sistema": "nazare-paulista",
+    "url_base": "https://www.camaranazarepaulista.sp.gov.br"
   }
 ]
