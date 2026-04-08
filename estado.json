@@ -7042,7 +7042,28 @@
     ],
     "Tremembé": [],
     "Santos": [],
-    "São Bernardo do Campo": [],
+    "São Bernardo do Campo": [
+      "sbc-573634",
+      "sbc-573633",
+      "sbc-573630",
+      "sbc-573631",
+      "sbc-573628",
+      "sbc-573629",
+      "sbc-573627",
+      "sbc-573626",
+      "sbc-573625",
+      "sbc-573624",
+      "sbc-573623",
+      "sbc-573622",
+      "sbc-573611",
+      "sbc-573621",
+      "sbc-573620",
+      "sbc-573619",
+      "sbc-573617",
+      "sbc-573612",
+      "sbc-573616",
+      "sbc-573615"
+    ],
     "Bragança Paulista": [],
     "Cajamar": [
       "cajamar-38-2026",
@@ -7078,5 +7099,5 @@
     "Nazaré Paulista": [],
     "Osasco": []
   },
-  "ultima_execucao": "2026-04-08T17:59:08.852Z"
+  "ultima_execucao": "2026-04-08T18:34:53.104Z"
 }
