@@ -167,6 +167,25 @@ Para alterar, edite `.github/workflows/monitor.yml`.
 
 ---
 
+
+## Municípios pendentes (LAI / bloqueados)
+
+Os municípios abaixo foram identificados como de interesse mas estão bloqueados por captcha ou Cloudflare — acesso só via pedido LAI (e-SIC):
+
+| Município | Bloqueio |
+|---|---|
+| Paulínia | Captcha / Cloudflare |
+| Mauá | Captcha / Cloudflare |
+| Lins | Captcha / Cloudflare |
+| Itatiba | Captcha / Cloudflare |
+| Taubaté | Captcha / Cloudflare |
+| São José dos Campos | Captcha / Cloudflare |
+| Itaquaquecetuba | Captcha / Cloudflare |
+| Guarulhos | Captcha / Cloudflare |
+| Caraguatatuba | Captcha / Cloudflare |
+
+---
+
 ## Lições aprendidas
 
 - **Não usar Playwright** em sites Angular com hash routing (`#/`) — o conteúdo não renderiza no servidor headless
