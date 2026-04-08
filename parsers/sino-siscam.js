@@ -54,11 +54,11 @@ function parsearHTML(html, url_base, grupo_id) {
   const trs = tabelaMatch[0].match(/<tr[\s\S]*?<\/tr>/gi) || [];
 
   for (const tr of trs) {
-    const idMatch = tr.match(/Details\?id=(\d+)&grupoId=\d+/);
+    const idMatch = tr.match(/Details\?id=(\d+)&amp;grupoId=\d+/);
     if (!idMatch) continue;
     const id = idMatch[1];
 
-    const linkTextMatch = tr.match(/Details\?id=\d+&grupoId=\d+[^>]*>([^<]+)<\/a>/);
+    const linkTextMatch = tr.match(/Details\?id=\d+&amp;grupoId=\d+[^>]*>([^<]+)<\/a>/);
     const linkText = linkTextMatch ? linkTextMatch[1].trim() : '';
 
     const tipoNumeroMatch = linkText.match(/^(.+?)\s+N[ºo°]?\s*([\d\/]+)$/i);
