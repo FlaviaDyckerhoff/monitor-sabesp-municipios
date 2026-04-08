@@ -1,16 +1,16 @@
-name: Monitor SABESP — Proposituras Municipais
+name: Monitor SABESP — VPS (Campinas, Carapicuíba, Osasco, SBC)
 
 on:
   schedule:
-    - cron: '0 11 * * *'   # 08:00 BRT
-    - cron: '0 15 * * *'   # 12:00 BRT
-    - cron: '0 20 * * *'   # 17:00 BRT
-    - cron: '0 0 * * *'    # 21:00 BRT
+    - cron: '30 11 * * *'   # 08:30 BRT — 30min depois do principal
+    - cron: '30 15 * * *'   # 12:30 BRT
+    - cron: '30 20 * * *'   # 17:30 BRT
+    - cron: '30 0 * * *'    # 21:30 BRT
   workflow_dispatch:
 
 jobs:
-  monitorar:
-    runs-on: ubuntu-latest
+  monitorar-vps:
+    runs-on: [self-hosted, linux]
     permissions:
       contents: write
 
@@ -20,6 +20,9 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Pull latest (pega estado atualizado pelo job principal)
+        run: git pull origin main
+
       - name: Configurar Node.js
         uses: actions/setup-node@v4
         with:
@@ -28,20 +31,18 @@ jobs:
       - name: Instalar dependências
         run: npm install
 
-      - name: Executar monitor
+      - name: Executar monitor (apenas municípios VPS)
         env:
           EMAIL_REMETENTE: ${{ secrets.EMAIL_REMETENTE }}
           EMAIL_SENHA: ${{ secrets.EMAIL_SENHA }}
           EMAIL_DESTINO: ${{ secrets.EMAIL_DESTINO }}
+          MUNICIPIOS_FILE: municipios-vps.json
         run: node monitor.js
 
       - name: Salvar estado atualizado no repositório
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          if [ ! -f estado.json ]; then
-            echo '{"proposicoes_vistas":{},"ultima_execucao":""}' > estado.json
-          fi
           git add estado.json
-          git diff --staged --quiet || git commit -m "chore: atualiza estado [skip ci]"
+          git diff --staged --quiet || git commit -m "chore: atualiza estado VPS [skip ci]"
           git push

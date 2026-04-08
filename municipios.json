@@ -5,7 +5,18 @@
     "sistema": "sino-siscam",
     "url_base": "https://www.camarabotucatu.sp.gov.br",
     "grupo_id": 3,
-    "tipo_ids": [67, 50, 51, 46, 48, 44, 45, 47, 49, 39]
+    "tipo_ids": [
+      67,
+      50,
+      51,
+      46,
+      48,
+      44,
+      45,
+      47,
+      49,
+      39
+    ]
   },
   {
     "nome": "Hortolândia",
@@ -19,19 +30,25 @@
     "sistema": "sino-siscam",
     "url_base": "https://varzeapaulista9.siscam.com.br",
     "grupo_id": 1,
-    "tipo_ids": [79, 9, 8, 95, 5, 6, 2, 3, 4, 7, 57]
+    "tipo_ids": [
+      79,
+      9,
+      8,
+      95,
+      5,
+      6,
+      2,
+      3,
+      4,
+      7,
+      57
+    ]
   },
   {
     "nome": "Socorro",
     "uf": "SP",
     "sistema": "sapl",
     "url_base": "https://sapl.socorro.sp.leg.br"
-  },
-  {
-    "nome": "Campinas",
-    "uf": "SP",
-    "sistema": "sapl",
-    "url_base": "https://sapl.campinas.sp.leg.br"
   },
   {
     "nome": "Santo André",
@@ -59,19 +76,19 @@
     "backsite_path": "/dispositivo/customizado_publico/legislativo/busca_propositura_pub/"
   },
   {
-    "nome": "São Bernardo do Campo",
-    "uf": "SP",
-    "sistema": "legisoft",
-    "url_base": "https://www.camarasbc.sp.gov.br",
-    "legisoft_tipo": "legislativo-2"
-  },
-  {
     "nome": "Bragança Paulista",
     "uf": "SP",
     "sistema": "sino-siscam",
     "url_base": "https://braganca.siscam.com.br",
     "grupo_id": 3,
-    "tipo_ids": [5, 6, 2, 3, 4, 13]
+    "tipo_ids": [
+      5,
+      6,
+      2,
+      3,
+      4,
+      13
+    ]
   },
   {
     "nome": "Cajamar",
@@ -86,22 +103,9 @@
     ]
   },
   {
-    "nome": "Carapicuíba",
-    "uf": "SP",
-    "sistema": "carapicuiba",
-    "url_base": "https://www.camaracarapicuiba.sp.gov.br"
-  },
-  {
     "nome": "Nazaré Paulista",
     "uf": "SP",
     "sistema": "nazare-paulista",
     "url_base": "https://www.camaranazarepaulista.sp.gov.br"
-  },
-  {
-    "nome": "Osasco",
-    "uf": "SP",
-    "sistema": "rdm",
-    "url_base": "https://cmo.rdmsistemas.com.br",
-    "rdm_api_base": "https://cmo.rdmsistemas.com.br"
   }
 ]

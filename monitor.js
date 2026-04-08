@@ -29,7 +29,8 @@ function carregarKeywords() {
 }
 
 function carregarMunicipios() {
-  return JSON.parse(fs.readFileSync('municipios.json', 'utf8'));
+  const arquivo = process.env.MUNICIPIOS_FILE || 'municipios.json';
+  return JSON.parse(fs.readFileSync(arquivo, 'utf8'));
 }
 
 // ─── Parser dinâmico por sistema ─────────────────────────────────────────────
