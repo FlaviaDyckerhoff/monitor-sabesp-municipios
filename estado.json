@@ -1,4 +1,7 @@
 {
-  "proposicoes_vistas": {},
-  "ultima_execucao": ""
+  "proposicoes_vistas": {
+    "Botucatu": [],
+    "Hortolândia": []
+  },
+  "ultima_execucao": "2026-04-08T06:02:33.060Z"
 }
