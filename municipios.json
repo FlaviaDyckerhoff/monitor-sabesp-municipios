@@ -113,5 +113,11 @@
   "uf": "SP",
   "sistema": "joanopolis",
   "url_base": "https://camarajoanopolis.sp.gov.br"
+ },
+ {
+  "nome": "Rio Grande da Serra",
+  "uf": "SP",
+  "sistema": "rgserra",
+  "url_base": "https://www.camarargserra.sp.gov.br"
  }
 ]
