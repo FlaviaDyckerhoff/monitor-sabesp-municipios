@@ -237,6 +237,11 @@ async function enviarEmail(resultados, keywords, totalNovas) {
     const idsVistos = new Set(estado.proposicoes_vistas[municipio.nome] || []);
     const novas = proposicoes.filter(p => p.id && !idsVistos.has(p.id));
 
+    // Enriquecer ementas dos itens novos (parsers que suportam)
+    if (novas.length > 0 && typeof parser.enriquecerEmentas === 'function') {
+      await parser.enriquecerEmentas(novas);
+    }
+
     console.log(`  🆕 ${novas.length} nova(s) de ${proposicoes.length} total`);
 
     resultados.push({ municipio, novas });
@@ -259,3 +264,4 @@ async function enviarEmail(resultados, keywords, totalNovas) {
 
   console.log('\n✅ Monitor finalizado.');
 })();
+
