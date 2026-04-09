@@ -51,12 +51,6 @@
   "url_base": "https://sapl.socorro.sp.leg.br"
  },
  {
-  "nome": "Campinas",
-  "uf": "SP",
-  "sistema": "sapl",
-  "url_base": "https://sapl.campinas.sp.leg.br"
- },
- {
   "nome": "Santo André",
   "uf": "SP",
   "sistema": "spl",
@@ -74,13 +68,6 @@
   "sistema": "backsite",
   "url_base": "https://administrativo.camarasantos.sp.gov.br",
   "backsite_path": "/dispositivo/customizado_publico/legislativo/busca_propositura_pub/"
- },
- {
-  "nome": "São Bernardo do Campo",
-  "uf": "SP",
-  "sistema": "legisoft",
-  "url_base": "https://www.camarasbc.sp.gov.br",
-  "legisoft_tipo": "legislativo-2"
  },
  {
   "nome": "Bragança Paulista",
@@ -110,22 +97,15 @@
   ]
  },
  {
-  "nome": "Carapicuíba",
-  "uf": "SP",
-  "sistema": "carapicuiba",
-  "url_base": "https://www.camaracarapicuiba.sp.gov.br"
- },
- {
   "nome": "Nazaré Paulista",
   "uf": "SP",
   "sistema": "nazare-paulista",
   "url_base": "https://www.camaranazarepaulista.sp.gov.br"
  },
  {
-  "nome": "Osasco",
+  "nome": "Mairiporã",
   "uf": "SP",
-  "sistema": "rdm",
-  "url_base": "https://cmo.rdmsistemas.com.br",
-  "rdm_api_base": "https://cmo.rdmsistemas.com.br"
+  "sistema": "mairipora",
+  "url_base": "https://mairipora.sp.leg.br"
  }
 ]
