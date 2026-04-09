@@ -24,5 +24,11 @@
     "sistema": "rdm",
     "url_base": "https://cmo.rdmsistemas.com.br",
     "rdm_api_base": "https://cmo.rdmsistemas.com.br"
+  },
+  {
+    "nome": "Tremembé",
+    "uf": "SP",
+    "sistema": "spl",
+    "url_base": "https://tremembe.camarasempapel.com.br"
   }
 ]
