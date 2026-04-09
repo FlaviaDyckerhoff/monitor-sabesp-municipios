@@ -7571,7 +7571,13 @@
       "santos-280011",
       "santos-280009",
       "santos-280008",
-      "santos-280006"
+      "santos-280006",
+      "santos-280076",
+      "santos-280074",
+      "santos-280073",
+      "santos-280071",
+      "santos-280069",
+      "santos-280067"
     ],
     "São Bernardo do Campo": [
       "sbc-573727",
@@ -11175,7 +11181,8 @@
       "rgserra-3475",
       "rgserra-3457",
       "rgserra-3456"
-    ]
+    ],
+    "Praia Grande": []
   },
-  "ultima_execucao": "2026-04-09T22:02:38.688Z"
+  "ultima_execucao": "2026-04-09T22:09:45.683Z"
 }
