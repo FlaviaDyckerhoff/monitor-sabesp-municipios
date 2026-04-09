@@ -69,12 +69,6 @@
   "url_base": "https://cacapava.splonline.com.br"
  },
  {
-  "nome": "Tremembé",
-  "uf": "SP",
-  "sistema": "spl",
-  "url_base": "https://tremembe.camarasempapel.com.br"
- },
- {
   "nome": "Santos",
   "uf": "SP",
   "sistema": "backsite",
