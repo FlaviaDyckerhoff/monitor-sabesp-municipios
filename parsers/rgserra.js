@@ -1,9 +1,9 @@
 // parsers/rgserra.js
 // Parser para a Câmara Municipal de Rio Grande da Serra/SP
-// Sistema: Joomla + DocMan
-// API: GET /[categoria-slug]-[ano]?format=json&limit=20&offset=N
+// Sistema: Joomla + DocMan — API JSON server-side (sem AJAX)
+// API: GET /materias-legislativas-categorias/[subcat-slug]?format=json&limit=20&offset=N
 // Documentos em: response.linked.documents[]
-// Nota: API ignora limit>20; usar offset para paginar
+// Nota: sem ementa inline — usar title como ementa; PDF em links.file.href
 
 const CATEGORIAS_BASE = [
   'indicacoes',
@@ -33,6 +33,9 @@ async function buscar(municipio) {
     todas.push(...docs);
     await new Promise(r => setTimeout(r, 500));
   }
+
+  // Ordenar por data decrescente
+  todas.sort((a, b) => b.data.localeCompare(a.data));
 
   return todas;
 }
@@ -72,16 +75,19 @@ async function buscarDocs(url_base, subcatSlug) {
       if (pageDocs.length === 0) break;
 
       for (const doc of pageDocs) {
-        const href = (doc.links || {}).self?.href ||
+        const title = doc.title || '';
+        const { tipo, numero } = parsearTitulo(title);
+        const urlDetalhe = (doc.links || {}).self?.href ||
           `${url_base}/materias-legislativas-categorias/${subcatSlug}/${doc.id}`;
+
         docs.push({
           id: `rgserra-${doc.id}`,
-          tipo: extrairTipo(doc.title),
-          numero: extrairNumero(doc.title),
+          tipo,
+          numero,
           data: (doc.created_on || '-').substring(0, 10),
-          autor: '-',
-          ementa: doc.title || '-',
-          url: href,
+          autor: doc.created_by_name || '-',
+          ementa: title,  // sem ementa inline — conteúdo só no PDF
+          url: urlDetalhe,
         });
       }
 
@@ -97,16 +103,26 @@ async function buscarDocs(url_base, subcatSlug) {
   return docs;
 }
 
-function extrairTipo(title) {
-  if (!title) return 'Propositura';
-  const m = title.match(/^([A-Za-zÀ-ú\s]+?)(?:\s+[nN][º°.\s]*\d|\s+\d)/);
-  return m ? m[1].trim() : title.split(' ').slice(0, 2).join(' ');
-}
+// "Indicação n 14.2026" → tipo="Indicação", numero="14/2026"
+// "REQUERIMENTO n 10.2026" → tipo="Requerimento", numero="10/2026"
+function parsearTitulo(title) {
+  if (!title) return { tipo: 'Propositura', numero: '-' };
 
-function extrairNumero(title) {
-  if (!title) return '-';
-  const m = title.match(/[nN][º°.\s]*(\d+[.\-/]\d+)/);
-  return m ? m[1] : '-';
+  const m = title.match(/^(.+?)\s+[nN]\s+(\d+)\.(\d{4})/);
+  if (m) {
+    const raw = m[1].trim();
+    const tipo = raw.charAt(0).toUpperCase() + raw.slice(1).toLowerCase();
+    const numero = `${m[2]}/${m[3]}`;
+    return { tipo, numero };
+  }
+
+  // Fallback: "Moção n 04.2026" com acento
+  const m2 = title.match(/^([A-Za-zÀ-ú\s]+?)\s+[nN][º°]?\s*(\d+)[./](\d{4})/);
+  if (m2) {
+    return { tipo: m2[1].trim(), numero: `${m2[2]}/${m2[3]}` };
+  }
+
+  return { tipo: title.split(' ').slice(0, 2).join(' '), numero: '-' };
 }
 
 module.exports = { buscar };
