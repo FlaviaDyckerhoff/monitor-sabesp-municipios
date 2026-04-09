@@ -22,6 +22,7 @@ async function buscar(municipio) {
     });
 
     if (!response.ok) {
+      if (response.status === 500) break; // câmaras pequenas: fim normal de paginação
       console.error(`  [${nome}] Erro HTTP ${response.status}`);
       break;
     }
@@ -109,3 +110,4 @@ async function buscar(municipio) {
 }
 
 module.exports = { buscar };
+
