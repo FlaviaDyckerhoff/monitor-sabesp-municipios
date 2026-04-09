@@ -119,5 +119,11 @@
   "uf": "SP",
   "sistema": "rgserra",
   "url_base": "https://www.camarargserra.sp.gov.br"
+ },
+ {
+  "nome": "Praia Grande",
+  "uf": "SP",
+  "sistema": "praia-grande",
+  "url_base": "https://www.praiagrande.sp.leg.br"
  }
 ]
