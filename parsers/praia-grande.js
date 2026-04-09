@@ -1,9 +1,10 @@
 // parsers/praia-grande.js
 // Parser para a Câmara Municipal de Praia Grande/SP
-// Sistema PHP próprio — server-side rendering, sem API JSON
-// URL: GET /result_materias.php?ano_materia=AAAA&offset=N
-// Campos: Tipo, Autor, Data, Ementa, Número com link
-// 2089 matérias em 2026 — câmara grande, paginação obrigatória
+// Sistema PHP próprio — server-side rendering
+// URL: GET /dispositivo/ideCustom/camarapg_publico/materias_leg/result_materias.php?ano_materia=AAAA&offset=N
+// Estrutura: tabela HTML, 50 itens/pág, ~42 páginas para 2026
+// Campos: Tipo, Autor, Data de apresentação, link PDF (sem ementa inline)
+// ID único: codigo= do href de detalhes
 
 async function buscar(municipio) {
   const { url_base, nome } = municipio;
@@ -11,11 +12,11 @@ async function buscar(municipio) {
   const todas = [];
   const base = `${url_base}/dispositivo/ideCustom/camarapg_publico/materias_leg`;
   let offset = 1;
-  let totalPaginas = 300; // fallback seguro; sobrescrito pela função paginacao() da pág 1
+  let totalPaginas = 300;
 
   while (true) {
     const url = `${base}/result_materias.php?ano_materia=${ano}&offset=${offset}`;
-    console.log(`  [${nome}] Página ${offset}...`);
+    if (offset === 1 || offset % 10 === 0) console.log(`  [${nome}] Página ${offset}/${totalPaginas}...`);
 
     let response;
     try {
@@ -23,7 +24,6 @@ async function buscar(municipio) {
         headers: {
           'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
           'Accept': 'text/html,application/xhtml+xml',
-          'Accept-Language': 'pt-BR,pt;q=0.9',
           'Referer': `${base}/pesquisa.php`,
         }
       });
@@ -33,13 +33,15 @@ async function buscar(municipio) {
     }
 
     if (!response.ok) {
+      if (response.status === 500) break; // fim de paginação em câmaras pequenas
       console.error(`  [${nome}] Erro HTTP ${response.status}`);
       break;
     }
 
-    const html = await response.text();
+    const buf = Buffer.from(await response.arrayBuffer());
+    const html = buf.toString('latin1');
 
-    // Extrai total e limite da função paginacao() inline
+    // Extrai total e limite da função paginacao() inline (só pág 1)
     if (offset === 1) {
       const totalMatch = html.match(/var total\s*=\s*(\d+)/);
       const limiteMatch = html.match(/let limite\s*=\s*(\d+)/);
@@ -51,82 +53,65 @@ async function buscar(municipio) {
       }
     }
 
-    const props = parsearHTML(html, url_base, ano);
-    console.log(`  [${nome}] → ${props.length} proposituras`);
-
+    const props = parsearHTML(html, url_base, base, ano);
     if (props.length === 0) break;
     todas.push(...props);
 
     if (offset >= totalPaginas) break;
     offset++;
-    await new Promise(r => setTimeout(r, 1000));
+    await new Promise(r => setTimeout(r, 800));
   }
 
+  console.log(`  [${nome}] → ${todas.length} proposituras no total`);
   return todas;
 }
 
-function parsearHTML(html, url_base, ano) {
+function parsearHTML(html, url_base, base, ano) {
   const proposituras = [];
   const vistos = new Set();
 
-  // Estrutura: cada matéria tem link com número e ano
-  // Ex: <a href="...">Indicações Nº 1910/2026</a>
-  // Seguido de: Tipo, Autor, Data, Ementa
-
-  // Divide por bloco de matéria — âncora é o link com número/ano
-  const blocoRegex = /href="([^"]*)"[^>]*>\s*([\w\s]+N[ºo°]\s*[\d]+\/\d{4})/gi;
+  // Cada matéria: <a class="result" href="detalhes_materia.php?codigo=XXXXX">TIPO Nº NUM/ANO</a>
+  const blocoRegex = /<a[^>]*class="result"[^>]*href="(detalhes_materia\.php\?codigo=(\d+))"[^>]*>\s*([\s\S]*?)\s*<\/a>/gi;
   let m;
 
   while ((m = blocoRegex.exec(html)) !== null) {
     const href = m[1];
-    const linkText = m[2].trim();
+    const codigo = m[2];
+    const linkText = m[3].replace(/\s+/g, ' ').trim();
 
-    // Extrai tipo e número do link
+    // Verificar ano no texto do link
+    if (!linkText.includes(`/${ano}`)) continue;
+    if (vistos.has(codigo)) continue;
+    vistos.add(codigo);
+
+    // Tipo e número: "Indicações Nº 1910/2026"
     const tipoNumMatch = linkText.match(/^(.+?)\s+N[ºo°]\s*([\d]+\/\d{4})/i);
     if (!tipoNumMatch) continue;
 
     const tipo = tipoNumMatch[1].trim();
     const numero = tipoNumMatch[2].trim();
 
-    // Verifica ano
-    if (!numero.endsWith(`/${ano}`)) continue;
-
-    // ID único baseado no número
-    const id = `praia-grande-${numero.replace('/', '-')}`;
-    if (vistos.has(id)) continue;
-    vistos.add(id);
-
-    // Contexto ao redor do link
+    // Contexto após o link
     const idx = m.index;
-    const bloco = html.substring(Math.max(0, idx - 100), idx + 1500);
+    const bloco = html.substring(idx, idx + 1500);
 
-    // Tipo (pode vir em campo separado)
-    const tipoMatch = bloco.match(/Tipo:\s*<\/strong>\s*([^\n<]{3,60})/i)
-      || bloco.match(/Tipo:\s*([^\n<]{3,60})/i);
-    const tipoFinal = tipoMatch ? tipoMatch[1].trim() : tipo;
+    // Autor: <b>Autor: </b> NOME
+    const autorMatch = bloco.match(/<b>Autor:\s*<\/b>\s*([^<\n]{3,80})/i);
+    const autor = autorMatch ? autorMatch[1].trim() : '-';
 
-    // Autor
-    const autorMatch = bloco.match(/Autor:\s*<\/strong>\s*([^\n<]{3,80})/i)
-      || bloco.match(/Autor:\s*([^\n<]{3,80})/i);
-    const autor = autorMatch ? autorMatch[1].replace(/<[^>]+>/g, '').trim() : '-';
-
-    // Data
-    const dataMatch = bloco.match(/Data[^:]*:\s*<\/strong>\s*(\d{2}\s+de\s+\w+\s+de\s+\d{4})/i)
-      || bloco.match(/(\d{2}\/\d{2}\/\d{4})/);
+    // Data: <b>Data de apresentação: </b> DD de Mês de AAAA
+    const dataMatch = bloco.match(/<b>Data[^<]*<\/b>\s*([^<\n]{5,40})/i);
     const data = dataMatch ? dataMatch[1].trim() : '-';
 
-    // Ementa
-    const ementaMatch = bloco.match(/Ementa:\s*<\/strong>\s*([\s\S]{10,500}?)(?=<\/p>|Tipo:|Autor:|<div|$)/i)
-      || bloco.match(/Ementa:\s*([\s\S]{10,500}?)(?=Tipo:|Autor:|$)/i);
-    const ementa = ementaMatch
-      ? ementaMatch[1].replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim().substring(0, 400)
-      : tipoFinal;
+    // Sem ementa inline — usar tipo + número como descrição
+    const ementa = linkText;
 
     // URL de detalhe
-    const url_prop = href.startsWith('http') ? href : `${url_base}${href}`;
+    const url_prop = `${url_base}/dispositivo/ideCustom/camarapg_publico/materias_leg/${href}`;
 
     proposituras.push({
-      id, tipo: tipoFinal, numero, data, autor, ementa, url: url_prop
+      id: `praia-grande-${codigo}`,
+      tipo, numero, data, autor, ementa, url: url_prop
     });
   }
 
