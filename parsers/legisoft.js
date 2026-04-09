@@ -43,6 +43,29 @@ async function buscar(municipio) {
   return todas;
 }
 
+// Decodifica HTML entities (named + numeric)
+function decodeHtmlEntities(str) {
+  const named = {
+    'amp':'&','lt':'<','gt':'>','quot':'"','apos':"'",'nbsp':' ',
+    'Agrave':'À','Aacute':'Á','Acirc':'Â','Atilde':'Ã','Auml':'Ä','Aring':'Å',
+    'agrave':'à','aacute':'á','acirc':'â','atilde':'ã','auml':'ä','aring':'å',
+    'Egrave':'È','Eacute':'É','Ecirc':'Ê','Euml':'Ë',
+    'egrave':'è','eacute':'é','ecirc':'ê','euml':'ë',
+    'Igrave':'Ì','Iacute':'Í','Icirc':'Î','Iuml':'Ï',
+    'igrave':'ì','iacute':'í','icirc':'î','iuml':'ï',
+    'Ograve':'Ò','Oacute':'Ó','Ocirc':'Ô','Otilde':'Õ','Ouml':'Ö',
+    'ograve':'ò','oacute':'ó','ocirc':'ô','otilde':'õ','ouml':'ö',
+    'Ugrave':'Ù','Uacute':'Ú','Ucirc':'Û','Uuml':'Ü',
+    'ugrave':'ù','uacute':'ú','ucirc':'û','uuml':'ü',
+    'Ccedil':'Ç','ccedil':'ç','Ntilde':'Ñ','ntilde':'ñ',
+    'ordf':'ª','ordm':'º','laquo':'«','raquo':'»','mdash':'—','ndash':'–',
+  };
+  return str
+    .replace(/&#x([0-9a-fA-F]+);/g, (_, h) => String.fromCharCode(parseInt(h, 16)))
+    .replace(/&#([0-9]+);/g, (_, n) => String.fromCharCode(Number(n)))
+    .replace(/&([a-zA-Z]+);/g, (m, name) => named[name] || m);
+}
+
 // Busca ementa na página de detalhe
 // Estrutura: <span class="title">Ementa</span><p>TEXTO</p>
 async function buscarEmenta(url_prop) {
@@ -54,14 +77,12 @@ async function buscarEmenta(url_prop) {
     const html = await r.text();
     const m = html.match(/<span[^>]*class="title"[^>]*>Ementa<\/span>\s*<p>([\s\S]*?)<\/p>/i);
     if (!m) return null;
-    return m[1]
-      .replace(/<[^>]+>/g, ' ')
-      .replace(/&[a-z]+;/g, c => ({ '&amp;': '&', '&lt;': '<', '&gt;': '>', '&apos;': "'", '&quot;': '"' })[c] || c)
-      .replace(/&#(\d+);/g, (_, n) => String.fromCharCode(n))
-      .replace(/&#x([0-9a-f]+);/gi, (_, h) => String.fromCharCode(parseInt(h, 16)))
-      .replace(/\s+/g, ' ')
-      .trim()
-      .substring(0, 500);
+    return decodeHtmlEntities(
+      m[1]
+        .replace(/<[^>]+>/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim()
+    ).substring(0, 500);
   } catch {
     return null;
   }
