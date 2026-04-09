@@ -1968,7 +1968,9 @@
       "várzea-paulista-98582",
       "várzea-paulista-98634",
       "várzea-paulista-98630",
-      "várzea-paulista-98626"
+      "várzea-paulista-98626",
+      "várzea-paulista-101497",
+      "várzea-paulista-101493"
     ],
     "Socorro": [
       "socorro-4996",
@@ -2227,7 +2229,8 @@
       "socorro-5224",
       "socorro-5225",
       "socorro-5025",
-      "socorro-5030"
+      "socorro-5030",
+      "socorro-5229"
     ],
     "Campinas": [],
     "Santo André": [
@@ -2737,5 +2740,5 @@
     "Nazaré Paulista": [],
     "Osasco": []
   },
-  "ultima_execucao": "2026-04-09T13:24:40.279Z"
+  "ultima_execucao": "2026-04-09T13:56:49.972Z"
 }
