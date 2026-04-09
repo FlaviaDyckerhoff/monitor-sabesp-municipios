@@ -1879,7 +1879,24 @@
       "hortolândia-81202",
       "hortolândia-81201",
       "hortolândia-81200",
-      "hortolândia-81199"
+      "hortolândia-81199",
+      "hortolândia-81231",
+      "hortolândia-81230",
+      "hortolândia-81229",
+      "hortolândia-81228",
+      "hortolândia-81227",
+      "hortolândia-81226",
+      "hortolândia-81225",
+      "hortolândia-81224",
+      "hortolândia-81223",
+      "hortolândia-81222",
+      "hortolândia-81221",
+      "hortolândia-81220",
+      "hortolândia-81219",
+      "hortolândia-81218",
+      "hortolândia-81217",
+      "hortolândia-81216",
+      "hortolândia-81215"
     ],
     "Várzea Paulista": [
       "várzea-paulista-101489",
@@ -1986,7 +2003,8 @@
       "várzea-paulista-98630",
       "várzea-paulista-98626",
       "várzea-paulista-101497",
-      "várzea-paulista-101493"
+      "várzea-paulista-101493",
+      "várzea-paulista-101597"
     ],
     "Socorro": [
       "socorro-4996",
@@ -2247,7 +2265,9 @@
       "socorro-5025",
       "socorro-5030",
       "socorro-5229",
-      "socorro-5230"
+      "socorro-5230",
+      "socorro-5231",
+      "socorro-5232"
     ],
     "Campinas": [
       "campinas-455130",
@@ -7228,7 +7248,8 @@
       "santo-andré-71422",
       "santo-andré-71421",
       "santo-andré-71420",
-      "santo-andré-71419"
+      "santo-andré-71419",
+      "santo-andré-71435"
     ],
     "Caçapava": [
       "caçapava-47527",
@@ -10658,5 +10679,5 @@
     "Nazaré Paulista": [],
     "Osasco": []
   },
-  "ultima_execucao": "2026-04-09T16:12:25.687Z"
+  "ultima_execucao": "2026-04-09T18:13:42.676Z"
 }
