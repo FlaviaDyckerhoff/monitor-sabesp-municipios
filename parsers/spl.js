@@ -1,14 +1,13 @@
 // parsers/spl.js
 // Parser para câmaras que usam o sistema SPL (Ágape Consultoria)
-// API documentada em /dados-abertos.aspx
-// Endpoint: GET /api/publico/proposicao/?pg=N&qtd=100&ano=AAAA
-// Testado em: Tremembé/SP
-// Compatível com: Santo André/SP, Caçapava/SP e demais instâncias Ágape
+// API: GET /api/publico/proposicao/?pg=N&qtd=100&ano=AAAA
+// Testado em: Tremembé/SP, Santo André/SP, Caçapava/SP
 
 async function buscar(municipio) {
   const { url_base, nome } = municipio;
   const ano = new Date().getFullYear();
   const todas = [];
+  const idsVistos = new Set();
   let pagina = 1;
 
   while (true) {
@@ -35,67 +34,72 @@ async function buscar(municipio) {
       break;
     }
 
-    // SPL retorna { Total, Data: [...] } ou { total, data: [...] }
     const resultados = json.Data || json.data || json.results || json.items || [];
     const total = json.Total || json.total || json.count || 0;
     console.log(`  [${nome}] → ${resultados.length} proposições (total: ${total})`);
 
     if (resultados.length === 0) break;
 
+    let novasPagina = 0;
     for (const p of resultados) {
       const idRaw = p.Id || p.id || p.ProposicaoId || p.proposicaoId || p.Codigo || p.codigo;
       if (!idRaw) continue;
 
+      // Deduplicar — API pode repetir registros entre páginas
+      if (idsVistos.has(String(idRaw))) continue;
+      idsVistos.add(String(idRaw));
+
+      // Filtrar por ano — API pode ignorar o parâmetro ?ano=
+      const anoP = String(p.Ano || p.ano || '');
+      if (anoP && anoP !== String(ano)) continue;
+
+      novasPagina++;
+
       const id = `${nome.toLowerCase().replace(/\s+/g, '-')}-${idRaw}`;
 
-      // Tipo — campo Sigla ou Tipo
       const sigla = p.Sigla || p.sigla || '';
       const tipoDesc = p.Tipo || p.tipo || p.TipoDescricao || p.tipoDescricao || sigla || '-';
       const tipo = typeof tipoDesc === 'object' ? (tipoDesc.Descricao || tipoDesc.descricao || sigla) : tipoDesc;
 
-      // Número/Ano
       const numero = p.Numero || p.numero || '';
-      const anoP = p.Ano || p.ano || ano;
-      const numeroAno = numero ? `${numero}/${anoP}` : `${anoP}`;
+      const numeroAno = numero ? `${numero}/${anoP || ano}` : `${anoP || ano}`;
 
-      // Data
+      // Data — suporta ISO, /Date(...) e DD/MM/YYYY
       const dataRaw = p.Data || p.data || p.DataApresentacao || p.dataApresentacao
         || p.DataProtocolo || p.dataProtocolo || '';
       let data = '-';
       if (dataRaw) {
         const isoMatch = dataRaw.match(/(\d{4})-(\d{2})-(\d{2})/);
-        if (isoMatch) {
-          data = `${isoMatch[3]}/${isoMatch[2]}/${isoMatch[1]}`;
-        } else {
-          const msMatch = dataRaw.match(/\/Date\((\d+)[\+\-]/);
-          if (msMatch) data = new Date(parseInt(msMatch[1])).toLocaleDateString('pt-BR');
-        }
+        const brMatch  = dataRaw.match(/^(\d{2})\/(\d{2})\/(\d{4})/);
+        const msMatch  = dataRaw.match(/\/Date\((\d+)[\+\-]/);
+        if (isoMatch) data = `${isoMatch[3]}/${isoMatch[2]}/${isoMatch[1]}`;
+        else if (brMatch) data = `${brMatch[1]}/${brMatch[2]}/${brMatch[3]}`;
+        else if (msMatch) data = new Date(parseInt(msMatch[1])).toLocaleDateString('pt-BR');
       }
 
-      // Autor — pode ser array ou string
+      // Autor
       let autor = '-';
-      const autoresRaw = p.Autores || p.autores || p.Autor || p.autor;
+      const autoresRaw = p.Autores || p.autores || p.Autor || p.autor
+        || p.AutorRequerenteDados;
       if (Array.isArray(autoresRaw)) {
-        autor = autoresRaw
-          .map(a => a.Nome || a.nome || a.NomeAutor || a.nomeAutor || '')
-          .filter(Boolean).join(', ') || '-';
+        autor = autoresRaw.map(a => a.Nome || a.nome || a.NomeAutor || a.nomeAutor || a.nomeRazao || '').filter(Boolean).join(', ') || '-';
+      } else if (autoresRaw && typeof autoresRaw === 'object') {
+        autor = autoresRaw.nomeRazao || autoresRaw.Nome || autoresRaw.nome || '-';
       } else if (typeof autoresRaw === 'string' && autoresRaw) {
         autor = autoresRaw;
       }
 
-      // Ementa
       const ementa = (p.Ementa || p.ementa || p.Assunto || p.assunto || '-')
         .toString().trim().substring(0, 400);
 
-      // URL direta
       const processo = p.Processo || p.processo || p.NumProcesso || p.numProcesso || idRaw;
-      const url_prop = p.Url || p.url ||
-        `${url_base}/spl/processo.aspx?id=${processo}`;
+      const url_prop = p.Url || p.url || `${url_base}/spl/processo.aspx?id=${processo}`;
 
       todas.push({ id, tipo, numero: numeroAno, data, autor, ementa, url: url_prop });
     }
 
-    // Paginação
+    // Parar se a página não trouxe nenhum registro novo (loop de duplicatas)
+    if (novasPagina === 0) break;
     if (pagina * 100 >= total || resultados.length < 100 || pagina >= 20) break;
     pagina++;
     await new Promise(r => setTimeout(r, 1000));
