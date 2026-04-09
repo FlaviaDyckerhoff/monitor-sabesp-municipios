@@ -2273,7 +2273,10 @@
       "socorro-5229",
       "socorro-5230",
       "socorro-5231",
-      "socorro-5232"
+      "socorro-5232",
+      "socorro-5233",
+      "socorro-5234",
+      "socorro-5235"
     ],
     "Campinas": [
       "campinas-455130",
@@ -7502,7 +7505,14 @@
       "santos-279876",
       "santos-279874",
       "santos-279871",
-      "santos-279870"
+      "santos-279870",
+      "santos-279971",
+      "santos-279969",
+      "santos-279967",
+      "santos-279966",
+      "santos-279964",
+      "santos-279957",
+      "santos-279955"
     ],
     "São Bernardo do Campo": [
       "sbc-573727",
@@ -11014,7 +11024,19 @@
       "mairipora-irm-15112",
       "mairipora-irm-15236",
       "mairipora-irm-15159"
+    ],
+    "Joanópolis": [
+      "joanopolis-68146",
+      "joanopolis-68126",
+      "joanopolis-68125",
+      "joanopolis-68124",
+      "joanopolis-68108",
+      "joanopolis-68107",
+      "joanopolis-68128",
+      "joanopolis-68127",
+      "joanopolis-68113",
+      "joanopolis-68112"
     ]
   },
-  "ultima_execucao": "2026-04-09T20:32:49.334Z"
+  "ultima_execucao": "2026-04-09T20:44:41.515Z"
 }
