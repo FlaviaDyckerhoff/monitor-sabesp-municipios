@@ -2,6 +2,7 @@
 // Parser para câmaras que usam o sistema Legisoft (Virtualiza Tecnologia)
 // URL: /documentos/ordem:DESC/tipo:legislativo-2/ano:AAAA/pagina:N
 // Testado em: São Bernardo do Campo/SP
+// Nota: listagem não tem ementa; usa Situação do sub-title como descrição
 
 async function buscar(municipio) {
   const { url_base, nome, legisoft_tipo } = municipio;
@@ -64,26 +65,26 @@ function parsearHTML(html, url_base) {
     const idx = m.index;
     const bloco = html.substring(Math.max(0, idx - 100), idx + 1200);
 
-    // Título vem em <span class="title-link"><strong>Tipo Nº N/ANO</strong></span>
+    // Título: <span class="title-link"><strong>Tipo Nº N/ANO</strong></span>
     const strongMatch = bloco.match(/<span[^>]*title-link[^>]*>\s*<strong>([^<]+)<\/strong>/i)
       || bloco.match(/<strong>([A-ZÁÉÍÓÚÃÕ][^<]{5,80})<\/strong>/);
-
     const titulo = strongMatch ? strongMatch[1].trim() : '';
 
-    // Extrair tipo e número do título
+    // Tipo e número
     const numMatch = titulo.match(/^(.+?)\s+N[ºo°\xba]?\.?\s*(\d+\/\d{4})/i);
     const tipo = numMatch ? numMatch[1].trim() : titulo || 'Propositura';
     const numero = numMatch ? numMatch[2] : '';
 
-    // Metadata do sub-title: Protocolo, Data, Situação, Processo
+    // Data do Protocolo (sub-title: "Protocolo: 12506, Data Protocolo: 09/04/2026, ...")
     const dataMatch = bloco.match(/Data\s+Protocolo:\s*(\d{2}\/\d{2}\/\d{4})/i)
       || bloco.match(/(\d{2}\/\d{2}\/\d{4})/);
     const data = dataMatch ? dataMatch[1] : '-';
 
-    // Ementa — pode não existir nessa listagem; usar título como fallback
-    const ementaMatch = bloco.match(/(?:Ementa|Objeto)\s*:?\s*([^<\n]{20,400})/i);
-    const ementa = ementaMatch
-      ? ementaMatch[1].replace(/<[^>]+>/g, '').trim().substring(0, 400)
+    // Situação como ementa (único campo descritivo disponível na listagem)
+    // Ex: "Situação: Indicação ao Executivo"
+    const situacaoMatch = bloco.match(/Situa[çc][ãa]o:\s*([^,<\n]{3,100})/i);
+    const ementa = situacaoMatch
+      ? situacaoMatch[1].trim()
       : titulo.substring(0, 400);
 
     const url_prop = `${url_base}${href}`;
