@@ -1,6 +1,8 @@
 // parsers/backsite.js
 // Parser para câmaras que usam o sistema Backsite
-// Método: POST com form data, resposta em HTML Latin-1
+// Método: POST com form data, resposta HTML em Latin-1
+// Estrutura: cada card tem <strong>Tipo - Nº N/ANO [Processo Nº N/ANO]</strong>
+//            seguido de um bloco <pre>Array(...)</pre> com todos os campos
 // Testado em: Câmara Municipal de Santos/SP
 
 async function buscar(municipio) {
@@ -8,9 +10,11 @@ async function buscar(municipio) {
   const ano = new Date().getFullYear();
 
   const path = backsite_path || '/dispositivo/customizado_publico/legislativo/busca_propositura_pub/';
-  const url = `${url_base}${path}`;
+  // Backsite faz redirect 302 para index.php — usar diretamente
+  const url = `${url_base}${path}index.php`;
 
   const todas = [];
+  const idsVistos = new Set();
   let inicio = 0;
   const itensPorPagina = 100;
   let pagina = 1;
@@ -37,11 +41,13 @@ async function buscar(municipio) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
-        'User-Agent': 'Mozilla/5.0 (compatible; MonitorBot/1.0)',
-        'Accept': 'text/html,application/xhtml+xml',
-        'Referer': url,
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120.0.0.0 Safari/537.36',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+        'Referer': `${url_base}${path}`,
+        'Origin': url_base,
       },
       body: params.toString(),
+      redirect: 'follow',
     });
 
     if (!response.ok) {
@@ -49,11 +55,11 @@ async function buscar(municipio) {
       break;
     }
 
-    // HTML é Latin-1 — converter corretamente para evitar problema de encoding
+    // HTML é Latin-1
     const buffer = Buffer.from(await response.arrayBuffer());
     const html = buffer.toString('latin1');
 
-    const proposituras = parsearHTML(html, url_base, nome);
+    const proposituras = parsearHTML(html, url_base, nome, idsVistos);
     console.log(`  [${nome}] → ${proposituras.length} proposituras`);
 
     if (proposituras.length === 0) break;
@@ -72,69 +78,69 @@ async function buscar(municipio) {
   return todas;
 }
 
-function parsearHTML(html, url_base, nome) {
+function parsearHTML(html, url_base, nome, idsVistos) {
   const proposituras = [];
 
-  // \xba = º em Latin-1; incluído no charset além de ºo°
-  const re = /([A-ZÀ-Úa-zà-ú\xc0-\xff][^\n\-<]{2,60}?)\s*-\s*N[\xbaºo°]\.?\s*(\d+)\/(\d{4})/g;
+  // Cada card começa com: <strong>Tipo - Nº N/ANO [Processo Nº N/ANO]</strong>
+  // Dividir o HTML por esse padrão
+  const cardRegex = /<strong>([^<]+?)\s*-\s*N[\xbaº°o]\.?\s*(\d+\/\d{4})\s*\[Processo\s+N[\xbaº°o]\.?\s*(\d+\/\d{4})\]<\/strong>/g;
 
-  const titulos = [];
+  const cards = [];
   let m;
-  while ((m = re.exec(html)) !== null) {
-    titulos.push({
-      tipo: m[1].replace(/<[^>]+>/g, '').replace(/^\w+>/, '').trim(),
-      numero: m[2],
-      ano: m[3],
+  while ((m = cardRegex.exec(html)) !== null) {
+    cards.push({
+      tipo: m[1].trim(),
+      numeroAno: m[2],    // ex: 4421/2026
+      processo: m[3],     // ex: 4421/2026
       index: m.index,
     });
   }
 
-  for (let i = 0; i < titulos.length; i++) {
-    const t = titulos[i];
-    const fim = titulos[i + 1] ? titulos[i + 1].index : t.index + 3000;
-    const bloco = html.substring(t.index, fim);
+  for (let i = 0; i < cards.length; i++) {
+    const card = cards[i];
+    const fim = cards[i + 1] ? cards[i + 1].index : card.index + 4000;
+    const bloco = html.substring(card.index, fim);
 
-    // Processo (ID único) — também pode ter \xba
-    const processoMatch = bloco.match(/Processo\s+N[\xbaºo°]\.?\s*([\d\/]+)/i);
-    const processo = processoMatch ? processoMatch[1].replace(/\//g, '-') : `${t.numero}-${t.ano}`;
-    const id = `${nome.toLowerCase().replace(/\s+/g, '-')}-${processo}`;
+    // ID único: auto_10 do bloco Array
+    const autoMatch = bloco.match(/\[auto_10\]\s*=>\s*(\d+)/);
+    const autoId = autoMatch ? autoMatch[1] : card.processo.replace('/', '-');
 
-    // Data
-    const dataMatch = bloco.match(/Data:\s*<[^>]+>\s*([^<\n]{6,12})/i)
-      || bloco.match(/(\d{2}\/\d{2}\/\d{4})/);
-    const data = dataMatch ? dataMatch[1].trim() : '-';
+    if (idsVistos.has(autoId)) continue;
+    idsVistos.add(autoId);
 
-    // Autor
-    const autorMatch = bloco.match(/Autor:\s*(?:<[^>]+>)?\s*([^<\n]{3,80})/i);
-    const autor = autorMatch ? autorMatch[1].trim() : '-';
+    const id = `${nome.toLowerCase().replace(/\s+/g, '-')}-${autoId}`;
 
-    // Ementa — campo c522f756ae367a_ementa no bloco Array
-    const ementaArrMatch = bloco.match(/c522f756ae367a_ementa\]\s*=>\s*([^\[]{5,500})/);
-    const ementaHtmlMatch = bloco.match(/Ementa:\s*(?:<[^>]+>)?\s*([\s\S]{10,500}?)(?=<\/td>|<tr|Arquivos:|Detalhes)/i);
-    const ementaRaw = ementaArrMatch
-      ? ementaArrMatch[1]
-      : (ementaHtmlMatch ? ementaHtmlMatch[1] : '');
-    const ementa = ementaRaw
-      ? ementaRaw.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim().substring(0, 400)
+    // Número/ano já vem formatado no título
+    const numero = card.numeroAno;
+
+    // Data — campo c522f7549334b2_data => 2026-04-07 (ISO)
+    const dataMatch = bloco.match(/\[c522f7549334b2_data\]\s*=>\s*(\d{4}-\d{2}-\d{2})/);
+    let data = '-';
+    if (dataMatch) {
+      const [, y, mo, d] = dataMatch[1].match(/(\d{4})-(\d{2})-(\d{2})/);
+      data = `${d}/${mo}/${y}`;
+    }
+
+    // Ementa — campo c522f756ae367a_ementa
+    const ementaMatch = bloco.match(/\[c522f756ae367a_ementa\]\s*=>\s*([^\n\[]{5,600})/);
+    const ementa = ementaMatch
+      ? ementaMatch[1].trim().substring(0, 400)
       : '-';
 
-    // URL — link historico.php?cod=ID (padrão confirmado no HTML)
-    const linkMatch = bloco.match(/href="([^"]*historico\.php\?cod=\d+[^"]*)"/i)
-      || bloco.match(/href="([^"]*busca_propositura_pub[^"]*(?:detalhe|ver|processo)[^"]*)"/i);
-    const urlProp = linkMatch
-      ? (linkMatch[1].startsWith('http') ? linkMatch[1] : `${url_base}${linkMatch[1]}`)
-      : `${url_base}/dispositivo/customizado_publico/legislativo/busca_propositura_pub/?processo=${processo}`;
-
-    if (!t.tipo || !t.numero) continue;
+    // URL — link busca_documento_pub/detalhes.php?cod=ID (página real da propositura)
+    const detalhesMatch = bloco.match(/href="([^"]*busca_documento_pub[^"]*detalhes\.php\?cod=\d+[^"]*)"/i);
+    const url_prop = detalhesMatch
+      ? (detalhesMatch[1].startsWith('http') ? detalhesMatch[1] : `${url_base}${detalhesMatch[1]}`)
+      : `${url_base}/dispositivo/customizado_publico/legislativo/busca_documento_pub/detalhes.php?cod=${autoId}`;
 
     proposituras.push({
       id,
-      tipo: t.tipo,
-      numero: `${t.numero}/${t.ano}`,
+      tipo: card.tipo,
+      numero,
       data,
-      autor,
+      autor: '-',   // autoria é ID numérico no HTML; não exposto com nome
       ementa,
-      url: urlProp,
+      url: url_prop,
     });
   }
 
