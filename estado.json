@@ -1901,7 +1901,17 @@
       "hortolândia-81235",
       "hortolândia-81234",
       "hortolândia-81233",
-      "hortolândia-81232"
+      "hortolândia-81232",
+      "hortolândia-81246",
+      "hortolândia-81245",
+      "hortolândia-81244",
+      "hortolândia-81243",
+      "hortolândia-81242",
+      "hortolândia-81241",
+      "hortolândia-81240",
+      "hortolândia-81239",
+      "hortolândia-81238",
+      "hortolândia-81237"
     ],
     "Várzea Paulista": [
       "várzea-paulista-101489",
@@ -2010,7 +2020,12 @@
       "várzea-paulista-101497",
       "várzea-paulista-101493",
       "várzea-paulista-101597",
-      "várzea-paulista-101621"
+      "várzea-paulista-101621",
+      "várzea-paulista-101773",
+      "várzea-paulista-101769",
+      "várzea-paulista-101765",
+      "várzea-paulista-101757",
+      "várzea-paulista-101753"
     ],
     "Socorro": [
       "socorro-4996",
@@ -7360,7 +7375,10 @@
       "caçapava-47414",
       "caçapava-47413",
       "caçapava-47412",
-      "caçapava-47411"
+      "caçapava-47411",
+      "caçapava-47546",
+      "caçapava-47545",
+      "caçapava-47542"
     ],
     "Tremembé": [],
     "Santos": [
@@ -7787,7 +7805,8 @@
       "bragança-paulista-411478",
       "bragança-paulista-420401",
       "bragança-paulista-236707",
-      "bragança-paulista-416154"
+      "bragança-paulista-416154",
+      "bragança-paulista-421085"
     ],
     "Cajamar": [
       "cajamar-38-2026",
@@ -13300,5 +13319,5 @@
       "praia-grande-42231"
     ]
   },
-  "ultima_execucao": "2026-04-10T06:21:36.046Z"
+  "ultima_execucao": "2026-04-10T14:38:01.079Z"
 }
