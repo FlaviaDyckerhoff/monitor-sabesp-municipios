@@ -3,6 +3,17 @@
 // Estrutura SPA — sem <tbody>, links inline em <a href="/[Siscam/]Documentos/Details?id=...&amp;grupoId=...">
 // Testado em: Botucatu/SP (com /Siscam prefix), Várzea Paulista/SP, Bragança Paulista/SP
 
+function decodificarEntities(str) {
+  if (!str) return str;
+  return str
+    .replace(/&#x([0-9A-Fa-f]+);/g, (_, hex) => String.fromCharCode(parseInt(hex, 16)))
+    .replace(/&#(\d+);/g, (_, dec) => String.fromCharCode(parseInt(dec, 10)))
+    .replace(/&amp;/g, '&')
+    .replace(/&quot;/g, '"')
+    .replace(/&apos;/g, "'")
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>');
+}
 async function buscar(municipio) {
   const { url_base, nome, grupo_id, tipo_ids } = municipio;
   const ano = new Date().getFullYear();
