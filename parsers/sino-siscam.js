@@ -45,14 +45,14 @@ async function buscar(municipio) {
     }
 
     const html = await response.text();
-    const proposicoes = parsearHTML(html, url_base, grupo_id, nome);
-    console.log(`  [${nome}] → ${proposicoes.length} proposituras`);
+    const coes = parsearHTML(html, url_base, grupo_id, nome);
+    console.log(`  [${nome}] → ${coes.length} turas`);
 
-    todas.push(...proposicoes);
+    todas.push(...coes);
 
     // Próxima página existe?
     const temProxima = html.includes(`Pagina=${pagina + 1}`) || html.includes(`pagina=${pagina + 1}`);
-    if (!temProxima || proposicoes.length === 0 || pagina >= 10) break;
+    if (!temProxima || coes.length === 0 || pagina >= 10) break;
 
     pagina++;
     await new Promise(r => setTimeout(r, 1000));
@@ -62,7 +62,7 @@ async function buscar(municipio) {
 }
 
 function parsearHTML(html, url_base, grupo_id, nome) {
-  const proposicoes = [];
+  const coes = [];
   const idsVistos = new Set();
 
   // Links inline: <a href="/[Siscam/]Documentos/Details?id=123&amp;grupoId=1">Tipo Nº 10/2026</a>
@@ -114,8 +114,15 @@ function parsearHTML(html, url_base, grupo_id, nome) {
 
     const id_unico = `${nome.toLowerCase().replace(/[\s/]+/g, '-')}-${id}`;
 
-    proposicoes.push({ id: id_unico, tipo, numero, data, autor: '-', ementa, url: url_prop });
-  }
+    proposicoes.push({
+  id: id_unico,
+  tipo: decodificarEntities(tipo),
+  numero,
+  data,
+  autor: '-',
+  ementa: decodificarEntities(ementa),
+  url: url_prop
+});
 
   return proposicoes;
 }
