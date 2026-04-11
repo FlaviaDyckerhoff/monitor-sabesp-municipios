@@ -11,14 +11,7 @@
     "sistema": "carapicuiba",
     "url_base": "https://www.camaracarapicuiba.sp.gov.br"
   },
-  {
-    "nome": "São Bernardo do Campo",
-    "uf": "SP",
-    "sistema": "legisoft",
-    "url_base": "https://www.camarasbc.sp.gov.br",
-    "legisoft_tipo": "legislativo-2"
-  },
-  {
+    {
     "nome": "Osasco",
     "uf": "SP",
     "sistema": "rdm",
