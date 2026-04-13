@@ -97,12 +97,6 @@
   ]
  },
  {
-  "nome": "Nazaré Paulista",
-  "uf": "SP",
-  "sistema": "nazare-paulista",
-  "url_base": "https://www.camaranazarepaulista.sp.gov.br"
- },
- {
   "nome": "Mairiporã",
   "uf": "SP",
   "sistema": "mairipora",
