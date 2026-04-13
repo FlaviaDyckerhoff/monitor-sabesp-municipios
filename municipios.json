@@ -88,7 +88,7 @@
   "nome": "Cajamar",
   "uf": "SP",
   "sistema": "cajamar",
-  "url_base": "https://www.cmdc.sp.gov.br",
+  "url_base": "https://www.camaracajamar.sp.gov.br",
   "cajamar_paths": [
    "/documentos/lei",
    "/documentos/indicacoes",
