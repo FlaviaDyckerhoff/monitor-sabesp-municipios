@@ -2104,7 +2104,10 @@
       "várzea-paulista-101897",
       "várzea-paulista-101893",
       "várzea-paulista-101889",
-      "várzea-paulista-102190"
+      "várzea-paulista-102190",
+      "várzea-paulista-102238",
+      "várzea-paulista-102234",
+      "várzea-paulista-102230"
     ],
     "Socorro": [
       "socorro-4996",
@@ -2372,7 +2375,8 @@
       "socorro-5234",
       "socorro-5235",
       "socorro-5236",
-      "socorro-5237"
+      "socorro-5237",
+      "socorro-5238"
     ],
     "Campinas": [
       "campinas-455130",
@@ -7793,7 +7797,14 @@
       "santo-andré-71558",
       "santo-andré-71555",
       "santo-andré-71553",
-      "santo-andré-71552"
+      "santo-andré-71552",
+      "santo-andré-71660",
+      "santo-andré-71659",
+      "santo-andré-71658",
+      "santo-andré-71655",
+      "santo-andré-71647",
+      "santo-andré-71640",
+      "santo-andré-71629"
     ],
     "Caçapava": [
       "caçapava-47527",
@@ -11866,7 +11877,14 @@
       "joanopolis-68113",
       "joanopolis-68112",
       "joanopolis-68084",
-      "joanopolis-68161"
+      "joanopolis-68161",
+      "joanopolis-68167",
+      "joanopolis-68166",
+      "joanopolis-68163",
+      "joanopolis-68151",
+      "joanopolis-68150",
+      "joanopolis-68136",
+      "joanopolis-68158"
     ],
     "Rio Grande da Serra": [
       "rgserra-3477",
@@ -14042,5 +14060,5 @@
       "praia-grande-43693"
     ]
   },
-  "ultima_execucao": "2026-04-14T16:01:47.849Z"
+  "ultima_execucao": "2026-04-14T18:50:24.227Z"
 }
