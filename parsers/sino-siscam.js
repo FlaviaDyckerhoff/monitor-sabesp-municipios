@@ -1,7 +1,8 @@
 // parsers/sino-siscam.js
 // Parser para câmaras que usam o sistema SINO Siscam
-// Estrutura SPA — sem <tbody>, links inline em <a href="/[Siscam/]Documentos/Details?id=...&amp;grupoId=...">
-// Testado em: Botucatu/SP (com /Siscam prefix), Várzea Paulista/SP, Bragança Paulista/SP
+// Estrutura SPA — links inline em <a href="/Documentos/Details?id=...&grupoId=...">
+// Ementa disponível apenas na página de detalhe — buscada via enriquecerEmentas
+// Testado em: Botucatu/SP, Várzea Paulista/SP, Bragança Paulista/SP
 
 function decodificarEntities(str) {
   if (!str) return str;
@@ -74,6 +75,9 @@ function parsearHTML(html, url_base, grupo_id, nome) {
     if (idsVistos.has(id)) continue;
     idsVistos.add(id);
 
+    // Ignora documentos relacionados (Pareceres, Substitutivos, etc.)
+    if (/ ao /i.test(texto)) continue;
+
     const numMatch = texto.match(/N[ºoO°\xba]?\.?\s*(\d+\/\d{4})/i)
       || texto.match(/(\d{1,4}\/\d{4})$/);
     const numero = numMatch ? numMatch[1] : '-';
@@ -91,11 +95,6 @@ function parsearHTML(html, url_base, grupo_id, nome) {
     const dataMatch = bloco.match(/(\d{2}\/\d{2}\/\d{4})/);
     const data = dataMatch ? dataMatch[1] : '-';
 
-    const ementaMatch = bloco.match(/(?:Ementa|Assunto)\s*:?\s*([^<\n]{10,400})/i);
-    const ementa = ementaMatch
-      ? ementaMatch[1].replace(/<[^>]+>/g, '').trim().substring(0, 400)
-      : texto.substring(0, 400);
-
     const url_prop = href.startsWith('http')
       ? href.replace(/&amp;/g, '&')
       : `${url_base}${href.replace(/&amp;/g, '&')}`;
@@ -108,12 +107,45 @@ function parsearHTML(html, url_base, grupo_id, nome) {
       numero,
       data,
       autor: '-',
-      ementa: decodificarEntities(ementa),
-      url: url_prop
+      ementa: '', // preenchido por enriquecerEmentas para itens novos
+      url: url_prop,
+      _id: id,
+      _grupo_id: grupo_id,
+      _url_base: url_base,
     });
   }
 
   return proposicoes;
 }
 
-module.exports = { buscar };
+// Busca ementa na página de detalhe
+async function buscarEmenta(url_base, id, grupo_id) {
+  const url = `${url_base}/Documentos/Details?id=${id}&grupoId=${grupo_id}`;
+  try {
+    const response = await fetch(url, {
+      headers: { 'User-Agent': 'Mozilla/5.0 (compatible; MonitorBot/1.0)' }
+    });
+    if (!response.ok) return '-';
+    const html = await response.text();
+    const match = html.match(/<strong>Ementa:<\/strong>\s*([\s\S]{5,500}?)(?=<\/p>|<strong>)/i);
+    if (match) {
+      return decodificarEntities(
+        match[1].replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim().substring(0, 400)
+      );
+    }
+    return '-';
+  } catch {
+    return '-';
+  }
+}
+
+// Hook chamado pelo monitor.js apenas para itens novos
+async function enriquecerEmentas(itens) {
+  for (const item of itens) {
+    if (!item._id) continue;
+    item.ementa = await buscarEmenta(item._url_base, item._id, item._grupo_id);
+    await new Promise(r => setTimeout(r, 500));
+  }
+}
+
+module.exports = { buscar, enriquecerEmentas };
