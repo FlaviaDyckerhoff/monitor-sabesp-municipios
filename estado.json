@@ -149,7 +149,9 @@
       "botucatu-141965",
       "botucatu-141869",
       "botucatu-142029",
-      "botucatu-142097"
+      "botucatu-142097",
+      "botucatu-142156",
+      "botucatu-142216"
     ],
     "Hortolândia": [
       "hortolândia-81198",
@@ -2038,7 +2040,11 @@
       "hortolândia-81329",
       "hortolândia-81328",
       "hortolândia-81327",
-      "hortolândia-81326"
+      "hortolândia-81326",
+      "hortolândia-81338",
+      "hortolândia-81337",
+      "hortolândia-81336",
+      "hortolândia-81335"
     ],
     "Várzea Paulista": [
       "várzea-paulista-101489",
@@ -2190,7 +2196,11 @@
       "várzea-paulista-102556",
       "várzea-paulista-102552",
       "várzea-paulista-102548",
-      "várzea-paulista-102544"
+      "várzea-paulista-102544",
+      "várzea-paulista-102628",
+      "várzea-paulista-102616",
+      "várzea-paulista-102608",
+      "várzea-paulista-102592"
     ],
     "Socorro": [
       "socorro-4996",
@@ -2469,7 +2479,10 @@
       "socorro-5246",
       "socorro-5245",
       "socorro-5247",
-      "socorro-5248"
+      "socorro-5248",
+      "socorro-5250",
+      "socorro-5251",
+      "socorro-5249"
     ],
     "Campinas": [
       "campinas-455130",
@@ -8284,7 +8297,21 @@
       "caçapava-47563",
       "caçapava-47561",
       "caçapava-47558",
-      "caçapava-47555"
+      "caçapava-47555",
+      "caçapava-47673",
+      "caçapava-47671",
+      "caçapava-47666",
+      "caçapava-47660",
+      "caçapava-47657",
+      "caçapava-47656",
+      "caçapava-47644",
+      "caçapava-47642",
+      "caçapava-47640",
+      "caçapava-47623",
+      "caçapava-47622",
+      "caçapava-47614",
+      "caçapava-47600",
+      "caçapava-47568"
     ],
     "Tremembé": [
       "tremembé-5069",
@@ -14774,5 +14801,5 @@
       "praia-grande-43784"
     ]
   },
-  "ultima_execucao": "2026-04-16T16:59:09.712Z"
+  "ultima_execucao": "2026-04-16T18:52:17.987Z"
 }
