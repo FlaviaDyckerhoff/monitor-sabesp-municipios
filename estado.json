@@ -151,7 +151,10 @@
       "botucatu-142029",
       "botucatu-142097",
       "botucatu-142156",
-      "botucatu-142216"
+      "botucatu-142216",
+      "botucatu-141901",
+      "botucatu-142120",
+      "botucatu-141949"
     ],
     "Hortolândia": [
       "hortolândia-81198",
@@ -2044,7 +2047,13 @@
       "hortolândia-81338",
       "hortolândia-81337",
       "hortolândia-81336",
-      "hortolândia-81335"
+      "hortolândia-81335",
+      "hortolândia-81344",
+      "hortolândia-81343",
+      "hortolândia-81342",
+      "hortolândia-81341",
+      "hortolândia-81340",
+      "hortolândia-81339"
     ],
     "Várzea Paulista": [
       "várzea-paulista-101489",
@@ -2482,7 +2491,8 @@
       "socorro-5248",
       "socorro-5250",
       "socorro-5251",
-      "socorro-5249"
+      "socorro-5249",
+      "socorro-5252"
     ],
     "Campinas": [
       "campinas-455130",
@@ -8083,7 +8093,8 @@
       "santo-andré-71647",
       "santo-andré-71640",
       "santo-andré-71629",
-      "santo-andré-71665"
+      "santo-andré-71665",
+      "santo-andré-71701"
     ],
     "Caçapava": [
       "caçapava-47527",
@@ -8774,7 +8785,48 @@
       "santos-280469",
       "santos-280468",
       "santos-280467",
-      "santos-280466"
+      "santos-280466",
+      "santos-280656",
+      "santos-280654",
+      "santos-280652",
+      "santos-280650",
+      "santos-280649",
+      "santos-280647",
+      "santos-280645",
+      "santos-280643",
+      "santos-280640",
+      "santos-280638",
+      "santos-280636",
+      "santos-280635",
+      "santos-280634",
+      "santos-280632",
+      "santos-280630",
+      "santos-280628",
+      "santos-280627",
+      "santos-280625",
+      "santos-280622",
+      "santos-280619",
+      "santos-280617",
+      "santos-280614",
+      "santos-280613",
+      "santos-280611",
+      "santos-280610",
+      "santos-280608",
+      "santos-280606",
+      "santos-280605",
+      "santos-280604",
+      "santos-280603",
+      "santos-280602",
+      "santos-280599",
+      "santos-280597",
+      "santos-280595",
+      "santos-280593",
+      "santos-280592",
+      "santos-280590",
+      "santos-280587",
+      "santos-280585",
+      "santos-280578",
+      "santos-280574"
     ],
     "São Bernardo do Campo": [
       "sbc-573727",
@@ -12553,7 +12605,20 @@
       "rgserra-3398",
       "rgserra-3475",
       "rgserra-3457",
-      "rgserra-3456"
+      "rgserra-3456",
+      "rgserra-3530",
+      "rgserra-3528",
+      "rgserra-3527",
+      "rgserra-3526",
+      "rgserra-3525",
+      "rgserra-3524",
+      "rgserra-3523",
+      "rgserra-3522",
+      "rgserra-3521",
+      "rgserra-3520",
+      "rgserra-3519",
+      "rgserra-3518",
+      "rgserra-3531"
     ],
     "Praia Grande": [
       "praia-grande-43690",
@@ -14807,5 +14872,5 @@
       "praia-grande-43784"
     ]
   },
-  "ultima_execucao": "2026-04-16T19:53:37.667Z"
+  "ultima_execucao": "2026-04-16T22:07:19.872Z"
 }
