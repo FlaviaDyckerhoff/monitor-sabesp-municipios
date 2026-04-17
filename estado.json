@@ -154,7 +154,10 @@
       "botucatu-142216",
       "botucatu-141901",
       "botucatu-142120",
-      "botucatu-141949"
+      "botucatu-141949",
+      "botucatu-142332",
+      "botucatu-142340",
+      "botucatu-142344"
     ],
     "Hortolândia": [
       "hortolândia-81198",
@@ -2053,7 +2056,41 @@
       "hortolândia-81342",
       "hortolândia-81341",
       "hortolândia-81340",
-      "hortolândia-81339"
+      "hortolândia-81339",
+      "hortolândia-81378",
+      "hortolândia-81377",
+      "hortolândia-81376",
+      "hortolândia-81375",
+      "hortolândia-81374",
+      "hortolândia-81373",
+      "hortolândia-81372",
+      "hortolândia-81371",
+      "hortolândia-81370",
+      "hortolândia-81369",
+      "hortolândia-81368",
+      "hortolândia-81367",
+      "hortolândia-81366",
+      "hortolândia-81365",
+      "hortolândia-81364",
+      "hortolândia-81363",
+      "hortolândia-81362",
+      "hortolândia-81361",
+      "hortolândia-81360",
+      "hortolândia-81359",
+      "hortolândia-81358",
+      "hortolândia-81357",
+      "hortolândia-81356",
+      "hortolândia-81355",
+      "hortolândia-81354",
+      "hortolândia-81353",
+      "hortolândia-81352",
+      "hortolândia-81351",
+      "hortolândia-81350",
+      "hortolândia-81349",
+      "hortolândia-81348",
+      "hortolândia-81347",
+      "hortolândia-81346",
+      "hortolândia-81345"
     ],
     "Várzea Paulista": [
       "várzea-paulista-101489",
@@ -2492,7 +2529,11 @@
       "socorro-5250",
       "socorro-5251",
       "socorro-5249",
-      "socorro-5252"
+      "socorro-5252",
+      "socorro-5256",
+      "socorro-5253",
+      "socorro-5254",
+      "socorro-5255"
     ],
     "Campinas": [
       "campinas-455130",
@@ -14958,5 +14999,5 @@
       "praia-grande-43784"
     ]
   },
-  "ultima_execucao": "2026-04-17T06:32:12.616Z"
+  "ultima_execucao": "2026-04-17T14:45:40.888Z"
 }
