@@ -228,7 +228,7 @@ async function enviarEmail(resultados, keywords, totalNovas) {
 
     let proposicoes = [];
     try {
-      proposicoes = await parser.buscar(municipio);
+      proposicoes = await parser.buscar(municipio, estado.proposicoes_vistas[municipio.nome] || []);
     } catch (err) {
       console.error(`  ❌ Erro: ${err.message}`);
       continue;
