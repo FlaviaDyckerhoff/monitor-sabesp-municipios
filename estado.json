@@ -161,7 +161,34 @@
       "botucatu-141529",
       "botucatu-142320",
       "botucatu-142312",
-      "botucatu-141137"
+      "botucatu-141137",
+      "botucatu-142404",
+      "botucatu-142431",
+      "botucatu-142400",
+      "botucatu-142396",
+      "botucatu-142392",
+      "botucatu-141969",
+      "botucatu-142364",
+      "botucatu-142360",
+      "botucatu-142288",
+      "botucatu-142292",
+      "botucatu-142284",
+      "botucatu-142272",
+      "botucatu-142264",
+      "botucatu-142260",
+      "botucatu-142248",
+      "botucatu-142147",
+      "botucatu-142117",
+      "botucatu-142113",
+      "botucatu-142112",
+      "botucatu-142101",
+      "botucatu-142093",
+      "botucatu-142073",
+      "botucatu-142065",
+      "botucatu-142356",
+      "botucatu-142256",
+      "botucatu-142408",
+      "botucatu-142276"
     ],
     "Hortolândia": [
       "hortolândia-81198",
@@ -2123,7 +2150,9 @@
       "hortolândia-81398",
       "hortolândia-81397",
       "hortolândia-81396",
-      "hortolândia-81395"
+      "hortolândia-81395",
+      "hortolândia-81409",
+      "hortolândia-81408"
     ],
     "Várzea Paulista": [
       "várzea-paulista-101489",
@@ -2282,7 +2311,9 @@
       "várzea-paulista-102592",
       "várzea-paulista-102988",
       "várzea-paulista-102984",
-      "várzea-paulista-103015"
+      "várzea-paulista-103015",
+      "várzea-paulista-103043",
+      "várzea-paulista-103039"
     ],
     "Socorro": [
       "socorro-4996",
@@ -8524,7 +8555,13 @@
       "caçapava-47600",
       "caçapava-47568",
       "caçapava-47677",
-      "caçapava-47676"
+      "caçapava-47676",
+      "caçapava-47714",
+      "caçapava-47713",
+      "caçapava-47706",
+      "caçapava-47699",
+      "caçapava-47681",
+      "caçapava-47678"
     ],
     "Tremembé": [
       "tremembé-5069",
@@ -9308,7 +9345,8 @@
       "bragança-paulista-422173",
       "bragança-paulista-422560",
       "bragança-paulista-422651",
-      "bragança-paulista-422647"
+      "bragança-paulista-422647",
+      "bragança-paulista-422795"
     ],
     "Cajamar": [
       "cajamar-38-2026",
@@ -15166,5 +15204,5 @@
       "praia-grande-43857"
     ]
   },
-  "ultima_execucao": "2026-04-22T16:02:44.651Z"
+  "ultima_execucao": "2026-04-22T18:18:54.442Z"
 }
