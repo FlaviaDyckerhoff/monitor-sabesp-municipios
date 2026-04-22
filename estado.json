@@ -2110,7 +2110,20 @@
       "hortolândia-81389",
       "hortolândia-81388",
       "hortolândia-81387",
-      "hortolândia-81386"
+      "hortolândia-81386",
+      "hortolândia-81407",
+      "hortolândia-81406",
+      "hortolândia-81405",
+      "hortolândia-81404",
+      "hortolândia-81403",
+      "hortolândia-81402",
+      "hortolândia-81401",
+      "hortolândia-81400",
+      "hortolândia-81399",
+      "hortolândia-81398",
+      "hortolândia-81397",
+      "hortolândia-81396",
+      "hortolândia-81395"
     ],
     "Várzea Paulista": [
       "várzea-paulista-101489",
@@ -2268,7 +2281,8 @@
       "várzea-paulista-102608",
       "várzea-paulista-102592",
       "várzea-paulista-102988",
-      "várzea-paulista-102984"
+      "várzea-paulista-102984",
+      "várzea-paulista-103015"
     ],
     "Socorro": [
       "socorro-4996",
@@ -9254,7 +9268,9 @@
       "bragança-paulista-421705",
       "bragança-paulista-422153",
       "bragança-paulista-422173",
-      "bragança-paulista-422560"
+      "bragança-paulista-422560",
+      "bragança-paulista-422651",
+      "bragança-paulista-422647"
     ],
     "Cajamar": [
       "cajamar-38-2026",
@@ -15106,5 +15122,5 @@
       "praia-grande-43857"
     ]
   },
-  "ultima_execucao": "2026-04-22T06:32:19.821Z"
+  "ultima_execucao": "2026-04-22T15:54:09.649Z"
 }
