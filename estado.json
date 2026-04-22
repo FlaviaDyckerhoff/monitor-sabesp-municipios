@@ -188,7 +188,9 @@
       "botucatu-142356",
       "botucatu-142256",
       "botucatu-142408",
-      "botucatu-142276"
+      "botucatu-142276",
+      "botucatu-142535",
+      "botucatu-142531"
     ],
     "Hortolândia": [
       "hortolândia-81198",
@@ -2152,7 +2154,33 @@
       "hortolândia-81396",
       "hortolândia-81395",
       "hortolândia-81409",
-      "hortolândia-81408"
+      "hortolândia-81408",
+      "hortolândia-81435",
+      "hortolândia-81434",
+      "hortolândia-81433",
+      "hortolândia-81432",
+      "hortolândia-81431",
+      "hortolândia-81430",
+      "hortolândia-81429",
+      "hortolândia-81428",
+      "hortolândia-81427",
+      "hortolândia-81426",
+      "hortolândia-81425",
+      "hortolândia-81424",
+      "hortolândia-81423",
+      "hortolândia-81422",
+      "hortolândia-81421",
+      "hortolândia-81420",
+      "hortolândia-81419",
+      "hortolândia-81418",
+      "hortolândia-81417",
+      "hortolândia-81416",
+      "hortolândia-81415",
+      "hortolândia-81414",
+      "hortolândia-81413",
+      "hortolândia-81412",
+      "hortolândia-81411",
+      "hortolândia-81410"
     ],
     "Várzea Paulista": [
       "várzea-paulista-101489",
@@ -2313,7 +2341,8 @@
       "várzea-paulista-102984",
       "várzea-paulista-103015",
       "várzea-paulista-103043",
-      "várzea-paulista-103039"
+      "várzea-paulista-103039",
+      "várzea-paulista-103131"
     ],
     "Socorro": [
       "socorro-4996",
@@ -2613,7 +2642,12 @@
       "socorro-5261",
       "socorro-5267",
       "socorro-5268",
-      "socorro-5269"
+      "socorro-5269",
+      "socorro-5271",
+      "socorro-5272",
+      "socorro-5273",
+      "socorro-5274",
+      "socorro-5275"
     ],
     "Campinas": [
       "campinas-455130",
@@ -8571,7 +8605,9 @@
       "caçapava-47706",
       "caçapava-47699",
       "caçapava-47681",
-      "caçapava-47678"
+      "caçapava-47678",
+      "caçapava-47732",
+      "caçapava-47715"
     ],
     "Tremembé": [
       "tremembé-5069",
@@ -9156,7 +9192,8 @@
       "santos-280664",
       "santos-280663",
       "santos-280661",
-      "santos-280659"
+      "santos-280659",
+      "santos-280843"
     ],
     "São Bernardo do Campo": [
       "sbc-573727",
@@ -15211,8 +15248,9 @@
       "praia-grande-43785",
       "praia-grande-43784",
       "praia-grande-43856",
-      "praia-grande-43857"
+      "praia-grande-43857",
+      "praia-grande-43859"
     ]
   },
-  "ultima_execucao": "2026-04-22T19:55:17.808Z"
+  "ultima_execucao": "2026-04-22T22:36:07.438Z"
 }
