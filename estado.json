@@ -2386,7 +2386,8 @@
       "várzea-paulista-103183",
       "várzea-paulista-103179",
       "várzea-paulista-103175",
-      "várzea-paulista-103171"
+      "várzea-paulista-103171",
+      "várzea-paulista-103267"
     ],
     "Socorro": [
       "socorro-4996",
@@ -2696,7 +2697,10 @@
       "socorro-5280",
       "socorro-5276",
       "socorro-5277",
-      "socorro-5278"
+      "socorro-5278",
+      "socorro-5283",
+      "socorro-5281",
+      "socorro-5282"
     ],
     "Campinas": [
       "campinas-455130",
@@ -8507,7 +8511,9 @@
       "santo-andré-71709",
       "santo-andré-71707",
       "santo-andré-71706",
-      "santo-andré-71727"
+      "santo-andré-71727",
+      "santo-andré-71738",
+      "santo-andré-71737"
     ],
     "Caçapava": [
       "caçapava-47527",
@@ -8845,7 +8851,11 @@
       "caçapava-47703",
       "caçapava-47702",
       "caçapava-47701",
-      "caçapava-47700"
+      "caçapava-47700",
+      "caçapava-47808",
+      "caçapava-47807",
+      "caçapava-47806",
+      "caçapava-47805"
     ],
     "Tremembé": [
       "tremembé-5069",
@@ -13240,7 +13250,16 @@
       "rgserra-3520",
       "rgserra-3519",
       "rgserra-3518",
-      "rgserra-3531"
+      "rgserra-3531",
+      "rgserra-3532",
+      "rgserra-3540",
+      "rgserra-3539",
+      "rgserra-3538",
+      "rgserra-3537",
+      "rgserra-3536",
+      "rgserra-3535",
+      "rgserra-3534",
+      "rgserra-3533"
     ],
     "Praia Grande": [
       "praia-grande-43690",
@@ -15497,5 +15516,5 @@
       "praia-grande-43859"
     ]
   },
-  "ultima_execucao": "2026-04-23T17:09:34.335Z"
+  "ultima_execucao": "2026-04-23T18:19:21.409Z"
 }
