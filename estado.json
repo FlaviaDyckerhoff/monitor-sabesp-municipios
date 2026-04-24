@@ -8330,7 +8330,12 @@
       "campinas-456122",
       "campinas-456177",
       "campinas-456174",
-      "campinas-456171"
+      "campinas-456171",
+      "campinas-456179",
+      "campinas-456178",
+      "campinas-456182",
+      "campinas-456181",
+      "campinas-456180"
     ],
     "Santo André": [
       "santo-andré-71413",
@@ -15770,5 +15775,5 @@
       "praia-grande-43861"
     ]
   },
-  "ultima_execucao": "2026-04-24T17:58:54.598Z"
+  "ultima_execucao": "2026-04-24T18:07:50.418Z"
 }
