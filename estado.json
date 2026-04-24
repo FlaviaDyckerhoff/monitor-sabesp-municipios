@@ -2228,7 +2228,14 @@
       "hortolândia-81436",
       "hortolândia-81459",
       "hortolândia-81458",
-      "hortolândia-81457"
+      "hortolândia-81457",
+      "hortolândia-81466",
+      "hortolândia-81465",
+      "hortolândia-81464",
+      "hortolândia-81463",
+      "hortolândia-81462",
+      "hortolândia-81461",
+      "hortolândia-81460"
     ],
     "Várzea Paulista": [
       "várzea-paulista-101489",
@@ -2411,7 +2418,10 @@
       "várzea-paulista-103267",
       "várzea-paulista-103327",
       "várzea-paulista-103331",
-      "várzea-paulista-103379"
+      "várzea-paulista-103379",
+      "várzea-paulista-103515",
+      "várzea-paulista-103511",
+      "várzea-paulista-103507"
     ],
     "Socorro": [
       "socorro-4996",
@@ -2726,7 +2736,10 @@
       "socorro-5281",
       "socorro-5282",
       "socorro-5284",
-      "socorro-5285"
+      "socorro-5285",
+      "socorro-5288",
+      "socorro-5286",
+      "socorro-5287"
     ],
     "Campinas": [
       "campinas-455130",
@@ -8630,7 +8643,9 @@
       "santo-andré-71727",
       "santo-andré-71738",
       "santo-andré-71737",
-      "santo-andré-71744"
+      "santo-andré-71744",
+      "santo-andré-71772",
+      "santo-andré-71748"
     ],
     "Caçapava": [
       "caçapava-47527",
@@ -15748,8 +15763,12 @@
       "praia-grande-43856",
       "praia-grande-43857",
       "praia-grande-43859",
-      "praia-grande-43860"
+      "praia-grande-43860",
+      "praia-grande-43863",
+      "praia-grande-43864",
+      "praia-grande-43862",
+      "praia-grande-43861"
     ]
   },
-  "ultima_execucao": "2026-04-24T15:57:03.502Z"
+  "ultima_execucao": "2026-04-24T17:58:54.598Z"
 }
