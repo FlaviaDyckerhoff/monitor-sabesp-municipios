@@ -8343,7 +8343,11 @@
       "campinas-456178",
       "campinas-456182",
       "campinas-456181",
-      "campinas-456180"
+      "campinas-456180",
+      "campinas-456183",
+      "campinas-456186",
+      "campinas-456185",
+      "campinas-456184"
     ],
     "Santo André": [
       "santo-andré-71413",
@@ -13061,7 +13065,8 @@
       "carapicuiba-16966",
       "carapicuiba-16969",
       "carapicuiba-16964",
-      "carapicuiba-16965"
+      "carapicuiba-16965",
+      "carapicuiba-16972"
     ],
     "Nazaré Paulista": [],
     "Osasco": [],
@@ -15796,5 +15801,5 @@
       "praia-grande-43865"
     ]
   },
-  "ultima_execucao": "2026-04-24T20:37:55.564Z"
+  "ultima_execucao": "2026-04-24T21:31:39.500Z"
 }
