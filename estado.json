@@ -8571,7 +8571,9 @@
       "campinas-456245",
       "campinas-456248",
       "campinas-456247",
-      "campinas-456249"
+      "campinas-456249",
+      "campinas-456251",
+      "campinas-456250"
     ],
     "Santo André": [
       "santo-andré-71413",
@@ -9534,7 +9536,17 @@
       "tremembé-5087",
       "tremembé-5086",
       "tremembé-5085",
-      "tremembé-5095"
+      "tremembé-5095",
+      "tremembé-5106",
+      "tremembé-5105",
+      "tremembé-5104",
+      "tremembé-5103",
+      "tremembé-5102",
+      "tremembé-5101",
+      "tremembé-5100",
+      "tremembé-5098",
+      "tremembé-5097",
+      "tremembé-5096"
     ],
     "Santos": [
       "santos-279749",
@@ -16364,5 +16376,5 @@
       "praia-grande-43952"
     ]
   },
-  "ultima_execucao": "2026-04-28T12:25:55.970Z"
+  "ultima_execucao": "2026-04-28T13:17:54.364Z"
 }
