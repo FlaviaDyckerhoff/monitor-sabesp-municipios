@@ -2420,7 +2420,25 @@
       "hortolândia-81603",
       "hortolândia-81602",
       "hortolândia-81601",
-      "hortolândia-81600"
+      "hortolândia-81600",
+      "hortolândia-81622",
+      "hortolândia-81621",
+      "hortolândia-81620",
+      "hortolândia-81619",
+      "hortolândia-81618",
+      "hortolândia-81617",
+      "hortolândia-81616",
+      "hortolândia-81615",
+      "hortolândia-81614",
+      "hortolândia-81613",
+      "hortolândia-81612",
+      "hortolândia-81611",
+      "hortolândia-81610",
+      "hortolândia-81609",
+      "hortolândia-81608",
+      "hortolândia-81607",
+      "hortolândia-81606",
+      "hortolândia-81605"
     ],
     "Várzea Paulista": [
       "várzea-paulista-101489",
@@ -2635,7 +2653,14 @@
       "várzea-paulista-104243",
       "várzea-paulista-104239",
       "várzea-paulista-104235",
-      "várzea-paulista-104219"
+      "várzea-paulista-104219",
+      "várzea-paulista-104531",
+      "várzea-paulista-104511",
+      "várzea-paulista-104507",
+      "várzea-paulista-104503",
+      "várzea-paulista-104427",
+      "várzea-paulista-104287",
+      "várzea-paulista-104159"
     ],
     "Socorro": [
       "socorro-4996",
@@ -9771,7 +9796,10 @@
       "caçapava-47903",
       "caçapava-47881",
       "caçapava-47965",
-      "caçapava-47964"
+      "caçapava-47964",
+      "caçapava-47978",
+      "caçapava-47977",
+      "caçapava-47976"
     ],
     "Tremembé": [
       "tremembé-5069",
@@ -14398,7 +14426,22 @@
       "mairipora-irm-15355",
       "mairipora-irm-15354",
       "mairipora-irm-15353",
-      "mairipora-irm-15352"
+      "mairipora-irm-15352",
+      "mairipora-pl-6608",
+      "mairipora-irm-15377",
+      "mairipora-irm-15376",
+      "mairipora-irm-15375",
+      "mairipora-irm-15374",
+      "mairipora-irm-15373",
+      "mairipora-irm-15372",
+      "mairipora-irm-15371",
+      "mairipora-irm-15370",
+      "mairipora-irm-15369",
+      "mairipora-irm-15368",
+      "mairipora-irm-15367",
+      "mairipora-irm-15380",
+      "mairipora-irm-15378",
+      "mairipora-irm-15379"
     ],
     "Joanópolis": [
       "joanopolis-68146",
@@ -17148,5 +17191,5 @@
       "praia-grande-44118"
     ]
   },
-  "ultima_execucao": "2026-04-29T17:05:58.138Z"
+  "ultima_execucao": "2026-04-29T20:54:00.558Z"
 }
