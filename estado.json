@@ -257,7 +257,8 @@
       "botucatu-143319",
       "botucatu-143287",
       "botucatu-143323",
-      "botucatu-143335"
+      "botucatu-143335",
+      "botucatu-143423"
     ],
     "Hortolândia": [
       "hortolândia-81198",
@@ -2942,7 +2943,8 @@
       "socorro-5296",
       "socorro-5295",
       "socorro-5297",
-      "socorro-5298"
+      "socorro-5298",
+      "socorro-5300"
     ],
     "Campinas": [
       "campinas-455130",
@@ -9659,7 +9661,9 @@
       "caçapava-47909",
       "caçapava-47905",
       "caçapava-47903",
-      "caçapava-47881"
+      "caçapava-47881",
+      "caçapava-47965",
+      "caçapava-47964"
     ],
     "Tremembé": [
       "tremembé-5069",
@@ -16871,8 +16875,22 @@
       "praia-grande-43993",
       "praia-grande-43992",
       "praia-grande-43991",
-      "praia-grande-43990"
+      "praia-grande-43990",
+      "praia-grande-44100",
+      "praia-grande-44099",
+      "praia-grande-44097",
+      "praia-grande-44096",
+      "praia-grande-44095",
+      "praia-grande-44094",
+      "praia-grande-44093",
+      "praia-grande-44092",
+      "praia-grande-44091",
+      "praia-grande-44090",
+      "praia-grande-44089",
+      "praia-grande-44088",
+      "praia-grande-44087",
+      "praia-grande-44098"
     ]
   },
-  "ultima_execucao": "2026-04-29T04:13:30.767Z"
+  "ultima_execucao": "2026-04-29T12:20:04.812Z"
 }
