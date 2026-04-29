@@ -136,9 +136,11 @@ async function buscarEmenta(codigo) {
       html = new TextDecoder('latin1').decode(buf);
     }
 
-    // Ementa está após <p class="control-label">Ementa</p>
-    const match = html.match(/control-label[^>]*>Ementa<\/p>\s*<div[^>]*>\s*<div[^>]*>\s*<span[^>]*>([\s\S]{5,500}?)<\/span>/i)
-      || html.match(/Ementa<\/p>[\s\S]{0,200}?<span[^>]*>([\s\S]{5,500}?)<\/span>/i);
+    // Ementa está em <span class="align-middle h-auto">TEXTO</span>
+    // dentro de <div class="form-control-static"> após <p class="control-label">Ementa</p>
+    const match = html.match(/align-middle[^>]*>([\s\S]{5,500}?)<\/span>/i)
+      || html.match(/form-control-static[^>]*>[\s\S]{0,100}?<span[^>]*>([\s\S]{5,500}?)<\/span>/i)
+      || html.match(/Ementa<\/p>[\s\S]{0,300}?<span[^>]*>([\s\S]{5,500}?)<\/span>/i);
 
     if (match) {
       return match[1].replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim().substring(0, 400);
